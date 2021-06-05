@@ -1,0 +1,12 @@
+{
+  "name": "react-native-sunshine-app",
+  "displayName": "react-native-sunshine-app",
+  "expo": {
+    "name": "react-native-sunshine-app",
+    "slug": "react-native-sunshine-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
