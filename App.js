@@ -44,7 +44,7 @@ export default function App() {
     return <AppLoading />
   }
 
-  const renderItem = ({ item }) => <ForecastListItem data={item} />;
+  const renderItem = ({ item }) => <ForecastListItem weatherForDay={item} />
   
   return (
     <View style={styles.container}>
