@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Constants from "expo-constants";
 import { FetchWeatherTask } from "./utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
 import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
 import AppLoading from "expo-app-loading"
 import { error_message } from "./res/values/strings"
+import ForecastListItem from "./res/components/ForecastListItem"
 
 
 export default function App() {
@@ -42,6 +43,8 @@ export default function App() {
   if (!isReady) {
     return <AppLoading />
   }
+
+  const renderItem = ({ item }) => <ForecastListItem data={item} />;
   
   return (
     <View style={styles.container}>
@@ -51,9 +54,12 @@ export default function App() {
       </View>
       {isReady 
       ? (
-        <ScrollView>
-        {weatherData.map((wd, index) => <Text key={index} style={{padding:16, fontSize:20}}>{wd}</Text>)}
-        </ScrollView>
+        <FlatList 
+          data={weatherData} 
+          renderItem={renderItem} 
+          keyExtractor={( _ , index )=> `${index}`}
+          ItemSeparatorComponent={ () => <View style={{height:1, backgroundColor:"#dadada", marginLeft:8, marginRight:8}}/> }
+        />
       )
       : (
         <Text>{error_message}</Text>
@@ -67,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'stretch',
+    marginTop: StatusBar.currentHeight || 0,
     //justifyContent: 'center',
   },
 });
