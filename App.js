@@ -5,11 +5,16 @@ import Constants from "expo-constants";
 import { FetchWeatherTask } from "./utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
 import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
+import AppLoading from "expo-app-loading"
+import { error_message } from "./res/values/strings"
 
 
 export default function App() {
 
-  const [weatherData, setWeatherData] = useState([])
+  const [ state, setState ] = useState({
+    weatherData: [],
+    isReady: false,
+  })
 
   useEffect(() => {
     (async () => {
@@ -17,12 +22,26 @@ export default function App() {
         const location = await getPreferredWeatherLocation()
         const jsonWeatherResponse = await FetchWeatherTask(location)
         const simpleJsonWeatherData = getSimpleWeatherStringsFromJson(jsonWeatherResponse)
-        setWeatherData(simpleJsonWeatherData)
+        setState({
+          isReady: true,
+          weatherData: simpleJsonWeatherData,
+        })
+
       }catch(e){
+        setState({
+          ...state,
+          isReady: true,
+        })
         console.warn("Error From NetworkFetch: ", e)
       }
     })()
   }, [])
+
+  const { weatherData, isReady } = state
+
+  if (!isReady) {
+    return <AppLoading />
+  }
   
   return (
     <View style={styles.container}>
@@ -30,9 +49,15 @@ export default function App() {
       <View style={{backgroundColor:"#3F51B5", marginBottom: 10, paddingLeft: 20, height: 50, alignItems:"flex-start", justifyContent:"center"}}>
         <Text style={{color: '#fff', fontWeight:"bold", fontSize:20}}>Sunshine</Text>
       </View>
-      <ScrollView>
+      {isReady 
+      ? (
+        <ScrollView>
         {weatherData.map((wd, index) => <Text key={index} style={{padding:16, fontSize:20}}>{wd}</Text>)}
-      </ScrollView>
+        </ScrollView>
+      )
+      : (
+        <Text>{error_message}</Text>
+      )}
     </View>
   );
 }

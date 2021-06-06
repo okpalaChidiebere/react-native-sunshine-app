@@ -8,3 +8,4 @@ export const format_temperature_celsius = (temp) => `${temp}\u00B0C`
 export const format_temperature_fahrenheit = (temp) => `${temp}\u00B0F`
 
 
+export const error_message = "An error has occurred"
