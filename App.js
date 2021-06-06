@@ -1,14 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Constants from "expo-constants";
 import { FetchWeatherTask } from "./utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
 import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
 import AppLoading from "expo-app-loading"
-import { error_message } from "./res/values/strings"
-import ForecastListItem from "./res/components/ForecastListItem"
-
+import { error_message, forecast_stack, forecast_details_stack } from "./res/values/strings"
+import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator } from '@react-navigation/stack'
+import Forecast from './res/components/Forecast'
 
 export default function App() {
 
@@ -43,27 +45,20 @@ export default function App() {
   if (!isReady) {
     return <AppLoading />
   }
-
-  const renderItem = ({ item }) => <ForecastListItem weatherForDay={item} />
   
   return (
     <View style={styles.container}>
       <SunshineStatusbar backgroundColor="#303F9F" barStyle="light-content"/>
-      <View style={{backgroundColor:"#3F51B5", marginBottom: 10, paddingLeft: 20, height: 50, alignItems:"flex-start", justifyContent:"center"}}>
-        <Text style={{color: '#fff', fontWeight:"bold", fontSize:20}}>Sunshine</Text>
-      </View>
       {isReady 
       ? (
-        <FlatList 
-          data={weatherData} 
-          renderItem={renderItem} 
-          keyExtractor={( _ , index )=> `${index}`}
-          ItemSeparatorComponent={ () => <View style={{height:1, backgroundColor:"#dadada", marginLeft:8, marginRight:8}}/> }
-        />
+        <NavigationContainer>
+          <MainNavigator weatherData={weatherData}/>
+        </NavigationContainer>     
       )
       : (
         <Text>{error_message}</Text>
       )}
+      
     </View>
   );
 }
@@ -86,3 +81,34 @@ function SunshineStatusbar ({backgroundColor, ...props}) {
     </View>
   )
 }
+
+const Stack = createStackNavigator()
+  const MainNavigator = ({ weatherData }) => (
+    <Stack.Navigator headerMode="screen">
+        <Stack.Screen
+          name={forecast_stack}
+          component={Forecast}
+          options={{
+            title: 'Sunshine',
+            headerTintColor: 'white',
+            headerStyle: { backgroundColor: "#3F51B5" },
+          }}
+          initialParams={{ weatherData }}
+        />
+        <Stack.Screen
+          name={forecast_details_stack}
+          component={ForecastDetails}
+          options={/*If you do not specify this option, react-native will still add it for you but with default options*/
+            ForecastDetailsOptions
+          }
+        />
+    </Stack.Navigator>
+  )
+
+
+  /**
+   * 
+   * <View style={{backgroundColor:"#3F51B5", marginBottom: 10, paddingLeft: 20, height: 50, alignItems:"flex-start", justifyContent:"center"}}>
+        <Text style={{color: '#fff', fontWeight:"bold", fontSize:20}}>Sunshine</Text>
+      </View>
+   */

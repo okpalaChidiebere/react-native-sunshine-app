@@ -1,19 +1,22 @@
 import React from "react"
-import { StyleSheet, Text, TouchableHighlight, ToastAndroid, Platform } from "react-native"
+import { StyleSheet, Text, TouchableHighlight } from "react-native"
 import {primary_text, activated } from "../values/colors"
+import { CommonActions } from "@react-navigation/native"
+import { forecast_details_stack } from "../values/strings"
 
-const handleOnPress = (weatherForDay) => {
-    Platform.OS == 'android' && (ToastAndroid.showWithGravityAndOffset(
-      weatherForDay,
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-      25,
-      50
-    ))
+const handleOnPress = (weatherForDay, navigation) => {
+    navigation.dispatch(
+        CommonActions.navigate({
+          name: forecast_details_stack,
+          params: {
+            weatherForDay,
+          },
+        })
+    )
 }
 
-const ForecastListItem = ({ weatherForDay, style }) => ( //FYI: weather for the day is a string
-    <TouchableHighlight onPress={() => handleOnPress(weatherForDay)} style={[styles.item, style]} underlayColor={activated}>
+const ForecastListItem = ({ weatherForDay, style, navigation }) => ( //FYI:  weatherForDay is a string
+    <TouchableHighlight onPress={() => handleOnPress(weatherForDay, navigation)} style={[styles.item, style]} underlayColor={activated}>
         <Text style={styles.data}>{weatherForDay}</Text>
     </TouchableHighlight>
 )
