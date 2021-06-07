@@ -6,11 +6,12 @@ import { FetchWeatherTask } from "./utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
 import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
 import AppLoading from "expo-app-loading"
-import { error_message, forecast_stack, forecast_details_stack } from "./res/values/strings"
+import { error_message, forecast_stack, forecast_details_stack, settings_stack } from "./res/values/strings"
 import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from '@react-navigation/stack'
 import Forecast from './res/components/Forecast'
+import Settings, { SettingsOptions } from "./res/components/Settings"
 
 export default function App() {
 
@@ -101,6 +102,11 @@ const Stack = createStackNavigator()
           options={/*If you do not specify this option, react-native will still add it for you but with default options*/
             ForecastDetailsOptions
           }
+        />
+        <Stack.Screen
+          name={settings_stack}
+          component={Settings}
+          options={SettingsOptions}
         />
     </Stack.Navigator>
   )

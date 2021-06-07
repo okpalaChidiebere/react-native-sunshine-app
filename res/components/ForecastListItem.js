@@ -2,17 +2,22 @@ import React from "react"
 import { StyleSheet, Text, TouchableHighlight } from "react-native"
 import {primary_text, activated } from "../values/colors"
 import { CommonActions } from "@react-navigation/native"
-import { forecast_details_stack } from "../values/strings"
+import { forecast_details_stack, settings_stack } from "../values/strings"
 
 const handleOnPress = (weatherForDay, navigation) => {
-    navigation.dispatch(
+    /*navigation.dispatch(
         CommonActions.navigate({
           name: forecast_details_stack,
           params: {
             weatherForDay,
           },
         })
-    )
+    )*/
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: settings_stack,
+      })
+  )
 }
 
 const ForecastListItem = ({ weatherForDay, style, navigation }) => ( //FYI:  weatherForDay is a string
