@@ -49,7 +49,7 @@ export default function App() {
   
   return (
     <View style={styles.container}>
-      <SunshineStatusbar backgroundColor="#303F9F" barStyle="light-content"/>
+      <StatusBar style="light" backgroundColor="#303F9F"/>
       {isReady 
       ? (
         <NavigationContainer>
