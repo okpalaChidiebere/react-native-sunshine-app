@@ -75,14 +75,6 @@ const styles = StyleSheet.create({
 });
 
 
-function SunshineStatusbar ({backgroundColor, ...props}) {
-  return (
-    <View style={{backgroundColor, height: Constants.statusBarHeight}}>
-      <StatusBar translucent={true} backgroundColor={backgroundColor} {...props} />
-    </View>
-  )
-}
-
 const Stack = createStackNavigator()
   const MainNavigator = ({ weatherData }) => (
     <Stack.Navigator headerMode="screen">
