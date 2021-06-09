@@ -1,58 +1,67 @@
-import React, { useState } from "react"
+import React, { useEffect } from "react"
 import { View, StyleSheet, ScrollView } from "react-native"
 import { Provider } from "react-native-paper"
 import { app_name } from "../values/strings"
 import { getSunshinePreferences } from "../../utils/SunshinePreferences"
 import EditTextPreference from "./EditTextPreference"
 import ListPreference from "./ListPreference"
+import { pref_location_key, pref_units_key } from "../values/strings"
+import { connect } from "react-redux"
+import { receivePreferences } from "../../actions/preferences"
 
+function Settings({ route, navigation, sunshinePreferences, dispatch }) {
 
-export default function Settings({ route, navigation }) {
-
-    const sunshinePreferences = getSunshinePreferences() //This returns us the whole preferences. We will be getting this from redux in a future lesson
-    const { location, units } = sunshinePreferences
-
-    /* 
-    This will state will be gotten from Redux (Redux loads the actual value from AsyncStorage) 
-    for future implementation. This is fine for now
-    */
-    const [state, setState] = useState({
-        location: location.value, //string
-        units: units.unit, //string
-    })
-
-    const locationChange = (newLocation) => {
-        //console.log(newLocation)
-        console.log("You will update Redux and Redux will HAVE TO update AsyncStorage")
-    }
-
-    const unitsChange = (unit) => {
-        //console.log(unit)
-        console.log("You will update Redux and Redux will HAVE TO update AsyncStorage")
-    }
+    useEffect(() => {
+        /**
+         * Before our component mounts, we will run the code below which will get sunshine preferences
+         * then run a dispatch which updates the store causing the componet to re-render again and then we get our preferences
+         * 
+         * NOTE: In future lessons we probaly will add this code to App.js where we initalize the weather data from SQLite and 
+         * Perferences from AsyncStorage into our redux store
+         */
+        (async () => {
+            try{
+               const results = await getSunshinePreferences()
+                dispatch(receivePreferences([
+                    ...results
+                ]))
+            }catch(e){
+                console.warn("Error with preference storage", e)
+            }
+        })()
+    }, [])
 
 
     return (
         <Provider style={styles.container}>
+            <View>
             <ScrollView>
-            {Object.keys(sunshinePreferences).map( key => {
-                const value = state[key]
-
+            {sunshinePreferences.map((pref) => {
+                const key = pref.prefKey
                 return (
                     <View key={key}>
                         {/** more on switching JSX https://stackoverflow.com/questions/46592833/how-to-use-switch-statement-inside-a-react-component **/
                             {
-                                location: <EditTextPreference value={value}  onLocationChange={locationChange} {...sunshinePreferences[key]}/>,
-                                units: <ListPreference unit={value} onUnitsChange={unitsChange} {...sunshinePreferences[key]}/>,
+                                [pref_location_key]: <EditTextPreference value={pref.value} {...pref}/>,
+                                [pref_units_key]: <ListPreference unit={pref.unit} {...pref}/>,
                             }[key]
                         }
                     </View>
                 )
             })}
             </ScrollView>
+            </View>
         </Provider>
     )
 }
+
+const mapStateToProps = ({ sunshinePreferences }) => ({
+    sunshinePreferences
+})
+
+const connectedSettings = connect(mapStateToProps)
+export default connectedSettings(Settings)
+
 
 const styles = StyleSheet.create({
     container: {

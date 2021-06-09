@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView } from "react-n
 import { primary_text, secondary_text, activated } from "../values/colors"
 import { Modal, Portal, TextInput } from "react-native-paper"
 import { colorAccent } from "../values/colors"
+import { connect } from "react-redux"
+import { handleSavePerference } from "../../actions/preferences"
 
-export default function EditTextPreference({ title, value, onLocationChange }){
+function EditTextPreference({ prefKey, title, value, onLocationChange }){
+
     const [state, setState] = useState({
         text: value,
         visible: false,
@@ -47,7 +50,7 @@ export default function EditTextPreference({ title, value, onLocationChange }){
                             <Pressable onPress={hideModal}><Text style={{color: colorAccent, fontWeight:"700"}}>CANCEL</Text></Pressable>
                             <View style={{width: 50}}/>
                             <Pressable onPress={() => {
-                                onLocationChange(text)
+                                onLocationChange(prefKey, "value", text)
                                 hideModal()
                             }}><Text style={{color: colorAccent, fontWeight:"700"}}>OK</Text></Pressable>
                         </View>
@@ -57,6 +60,15 @@ export default function EditTextPreference({ title, value, onLocationChange }){
         </Pressable>
     )
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onLocationChange: (key, fieldToUpdate, value) => dispatch(handleSavePerference({ key, fieldToUpdate, value }))
+    }
+}
+
+const connectedEditTextPreference = connect(null, mapDispatchToProps)
+export default connectedEditTextPreference(EditTextPreference)
 
 const styles = StyleSheet.create({
     title: {

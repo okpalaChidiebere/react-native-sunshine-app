@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Constants from "expo-constants";
 import { FetchWeatherTask } from "./utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
 import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
@@ -12,6 +11,11 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from '@react-navigation/stack'
 import Forecast from './res/components/Forecast'
 import Settings, { SettingsOptions } from "./res/components/Settings"
+import { createStore } from "redux"
+import { Provider } from "react-redux"
+import reducers from "./reducers"
+import middleware from "./middleware"
+
 
 export default function App() {
 
@@ -48,19 +52,20 @@ export default function App() {
   }
   
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="#303F9F"/>
-      {isReady 
-      ? (
-        <NavigationContainer>
-          <MainNavigator weatherData={weatherData}/>
-        </NavigationContainer>     
-      )
-      : (
-        <Text>{error_message}</Text>
-      )}
-      
-    </View>
+    <Provider store={createStore(reducers, middleware)}>
+      <View style={styles.container}>
+        <StatusBar style="light" backgroundColor="#303F9F"/>
+        {isReady 
+        ? (
+          <NavigationContainer>
+            <MainNavigator weatherData={weatherData}/>
+          </NavigationContainer>     
+        )
+        : (
+          <Text>{error_message}</Text>
+        )}
+      </View>
+    </Provider>
   );
 }
 

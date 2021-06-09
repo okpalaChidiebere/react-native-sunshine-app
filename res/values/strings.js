@@ -14,6 +14,8 @@ export const format_temperature_fahrenheit = (temp) => `${temp}\u00B0F`
 */
 // Label for the location preference
 export const pref_location_label = "Location"
+// Key name for storing location in SharedPreferences 
+export const pref_location_key = "location"
 // Default postal code for location preference 
 export const pref_location_default = "Mountain View, CA 94043"
 // Label for the temperature units preference
@@ -22,6 +24,8 @@ export const pref_units_label = "Temperature Units"
 export const pref_units_imperial = "Imperial"
 // Value in SharedPreferences for metric temperature unit option 
 export const pref_units_metric = "Metric"
+// Key name for temperature unit preference in SharedPreferences
+export const pref_units_key = "units"
 
 export const error_message = "An error has occurred"
 

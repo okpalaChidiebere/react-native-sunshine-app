@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView } from "react-n
 import { primary_text, secondary_text, activated } from "../values/colors"
 import { Modal, Portal, RadioButton } from "react-native-paper"
 import {  colorAccent } from "../values/colors"
+import { connect } from "react-redux"
+import { handleSavePerference } from "../../actions/preferences"
 
-export default function ListPreference({ title, unit, entries, entryValues, onUnitsChange }){
+function ListPreference({ prefKey, title, unit, entries, entryValues, onUnitsChange }){
 
     const [state, setState] = useState({
         checked: unit,
@@ -12,11 +14,11 @@ export default function ListPreference({ title, unit, entries, entryValues, onUn
     })
 
     const setChecked = (newValueChecked) => {
-        setState({ ...state, checked: newValueChecked })
-        onUnitsChange(newValueChecked)
+        setState({ checked: newValueChecked, visible: false }) //we close the modal as well as soon as the user selects a value
+        onUnitsChange(prefKey, "unit", newValueChecked)
     }
     const showModal = () => setState({ ...state, visible: true})
-    const hideModal = () => setState({ ...state, visible: false}) // TODO: when the modal hide, we will want to "unit" value in the UI. Hopefully when we connect to Redux, all this will be fixed
+    const hideModal = () => setState({ ...state, visible: false})
     const containerStyle = {backgroundColor: 'white', padding: 20, marginLeft: 30, marginRight: 30}
 
     const { visible, checked } = state
@@ -32,13 +34,13 @@ export default function ListPreference({ title, unit, entries, entryValues, onUn
         ]}>
             <View style={styles.preferenceRow}>
                 <Text style={styles.title}>{title}</Text>
-                <Text style={styles.value}>{/** right now, the value does not change when the user clicks ok. I will change this here after i see of it will change when we connect this to redux*/ unit}</Text>
+                <Text style={styles.value}>{unit}</Text>
             </View>
             <KeyboardAvoidingView behavior="padding">
                 <Portal>
                     <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                         <Text style={{fontSize: 20, fontWeight:"700" }}>{title}</Text>
-                        {
+                        {/* we loop through each entry and map the correct entryValue for each entry*/
                             entries.map((entry, index) => (
                                 <View key={entry} style={{flexDirection:"row", marginTop: 20, marginRight: 10, alignItems:"center"/*justifyContent:"space-between"*/}}>
                                     <RadioButton
@@ -60,6 +62,15 @@ export default function ListPreference({ title, unit, entries, entryValues, onUn
         </Pressable>
     )
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onUnitsChange: (key, fieldToUpdate, value) => dispatch(handleSavePerference({ key, fieldToUpdate, value }))
+    }
+}
+
+const connectedListPreference = connect(null, mapDispatchToProps)
+export default connectedListPreference(ListPreference)
 
 const styles = StyleSheet.create({
     title: {
