@@ -1,6 +1,8 @@
 import React from "react"
-import { StyleSheet, Button, Text, View, Platform, Linking, Share, Alert }  from "react-native"
-import { primary_text } from "../values/colors"
+import { StyleSheet, Button, Text, View, Platform, Linking, Share, Alert, TouchableOpacity }  from "react-native"
+import { primary_text, white } from "../values/colors"
+import ForecastDetailsMenu from "../menu/forecastDetails"
+import { Ionicons } from "@expo/vector-icons"
 
 export default function ForecastDetails({ route, navigation}){
 
@@ -98,11 +100,30 @@ const styles = StyleSheet.create ({
     },
 })
 
-export function ForecastDetailsOptions({ route }) {
+export function ForecastDetailsOptions({ route, navigation }) {
 
     return {
         title: 'Details',
-        headerTintColor: 'white',
+        headerTintColor: white,
         headerStyle: { backgroundColor: "#3F51B5" },
+        /** We show one menuIcon(share-social) on screen and have other menu items hidden only to appear when "more" icon is clicked */
+        headerRight: () => ( 
+            <View style={{flexDirection: "row", justifyContent: "space-between", width: 80}}>
+              <TouchableOpacity >
+                <Ionicons name="share-social" size={24} color={white} />
+              </TouchableOpacity>
+              <ForecastDetailsMenu
+                menutext="Menu"
+                menustyle={{marginRight: 8}}
+                textStyle={{color: 'white'}}
+                navigation={navigation}
+                route={route}
+                isIcon={true}
+                />
+            </View> 
+        ),
     }
 }
+/**
+ * You probaly my want TouchWithNativeFeedback for android menu icons like share only https://reactnative.dev/docs/touchablenativefeedback
+ */

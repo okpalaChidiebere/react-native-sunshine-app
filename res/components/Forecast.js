@@ -1,6 +1,8 @@
 import React from "react"
 import { FlatList, View, } from "react-native"
 import ForecastListItem from "./ForecastListItem"
+import ForecastMenu from "../menu/forecast"
+import { app_name, white } from "../values/colors"
 
 
 export default function Forecast({ route, navigation }) {
@@ -18,4 +20,23 @@ export default function Forecast({ route, navigation }) {
             />
         </View>
     );
+}
+
+export function ForecastOptions({ route, navigation }) {
+
+    return {
+        title: app_name,
+        headerTintColor: white,
+        headerStyle: { backgroundColor: "#3F51B5" },
+        /** We have all menuItem Hiddens on this Component  */
+        headerRight: () => ( 
+          <ForecastMenu 
+            menutext="Menu"
+            menustyle={{marginRight: 8}}
+            textStyle={{color: white}}
+            navigation={navigation}
+            route={route}
+            isIcon={true}/>
+        ),
+    }
 }

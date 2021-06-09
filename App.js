@@ -9,7 +9,7 @@ import { error_message, forecast_stack, forecast_details_stack, settings_stack }
 import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from '@react-navigation/stack'
-import Forecast from './res/components/Forecast'
+import Forecast, { ForecastOptions } from './res/components/Forecast'
 import Settings, { SettingsOptions } from "./res/components/Settings"
 import { createStore } from "redux"
 import { Provider } from "react-redux"
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'stretch',
     marginTop: StatusBar.currentHeight || 0,
-    //justifyContent: 'center',
   },
 });
 
@@ -86,11 +85,7 @@ const Stack = createStackNavigator()
         <Stack.Screen
           name={forecast_stack}
           component={Forecast}
-          options={{
-            title: 'Sunshine',
-            headerTintColor: 'white',
-            headerStyle: { backgroundColor: "#3F51B5" },
-          }}
+          options={ForecastOptions}
           initialParams={{ weatherData }}
         />
         <Stack.Screen
@@ -107,11 +102,3 @@ const Stack = createStackNavigator()
         />
     </Stack.Navigator>
   )
-
-
-  /**
-   * 
-   * <View style={{backgroundColor:"#3F51B5", marginBottom: 10, paddingLeft: 20, height: 50, alignItems:"flex-start", justifyContent:"center"}}>
-        <Text style={{color: '#fff', fontWeight:"bold", fontSize:20}}>Sunshine</Text>
-      </View>
-   */

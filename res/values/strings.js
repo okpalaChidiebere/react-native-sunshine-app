@@ -4,6 +4,17 @@
 
 export const app_name = "Sunshine"
 
+/**
+ * By convention, "action" denotes that this String will be used as the label for an
+ * Action, typically from the action bar.  The ActionBar is limited real estate, so
+ * shorter is better.   
+ */
+export const action_map = "Map Location"
+// Used to share the weather forecast on a given day from the ForecastDetails component
+export const action_share = "Share"
+// Used to open Settings Menu from Forcast and ForecastDetails components
+export const action_settings = "Settings"
+
 export const today = "Today"
 export const tomorrow = "Tomorrow"
 export const format_temperature_celsius = (temp) => `${temp}\u00B0C`
