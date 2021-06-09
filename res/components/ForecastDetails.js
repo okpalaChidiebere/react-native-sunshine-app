@@ -1,40 +1,33 @@
 import React from "react"
-import { StyleSheet, Button, Text, View, Platform, Linking, Share, Alert, TouchableOpacity }  from "react-native"
+import { StyleSheet, Text, View, Share, TouchableOpacity }  from "react-native"
 import { primary_text, white } from "../values/colors"
 import ForecastDetailsMenu from "../menu/forecastDetails"
 import { Ionicons } from "@expo/vector-icons"
 
 export default function ForecastDetails({ route, navigation}){
 
-    const openLocationInMap = async () => {
-        const addressString = "1600 Ampitheatre Parkway, CA"
-        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
-        const geoLocartionUrl = scheme + addressString
+    const { weatherForDay } = route.params
 
-        const supported = await Linking.canOpenURL(geoLocartionUrl)
+    return (
+        <View style={styles.container}>
+            <Text style={styles.display_weather}>{weatherForDay}</Text>
+        </View>
+    );
+}
 
-        if (supported) {
-            await Linking.openURL(geoLocartionUrl)
-        }else{
-            //The user may not have any app installed that will fulfil our request
-            console.log("Couldn't call " + geoLocartionUrl
-            + ", no receiving apps installed!")
-        }
-    }
+const styles = StyleSheet.create ({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 8,
+    },
+    display_weather: {
+        fontSize: 22,
+        color: primary_text,
+    },
+})
 
-    const openWebsite = async () => {
-        const url = "https://google.com"
-
-        const supported = await Linking.canOpenURL(url)
-
-        if (supported) {
-        // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-        // by some browser in the mobile
-        await Linking.openURL(url)
-        } else {
-            Alert.alert(`Don't know how to open this URL: ${url}`)
-        }
-    }
+export function ForecastDetailsOptions({ route, navigation }) {
 
     const handleOnClickShareTextButton = async () => {
         
@@ -69,39 +62,6 @@ export default function ForecastDetails({ route, navigation}){
         }
     }
 
-    const { weatherForDay } = route.params
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.display_weather}>{weatherForDay}</Text>
-            <Button title="Go back" onPress={() => navigation.goBack()} />
-            <View style={{ marginTop: 50 }}>
-                <Button title="OPEN LOCATION IN MAP" onPress={() => openLocationInMap()} />
-            </View>
-            <View style={{ marginTop: 50 }}>
-                <Button title="OPEN WEBSITE" onPress={openWebsite} />
-            </View>
-            <View style={{ marginTop: 50 }}>
-                <Button title="SHARE TEXT CONTENT" onPress={handleOnClickShareTextButton} />
-            </View>
-        </View>
-    );
-}
-
-const styles = StyleSheet.create ({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 8,
-    },
-    display_weather: {
-        fontSize: 22,
-        color: primary_text,
-    },
-})
-
-export function ForecastDetailsOptions({ route, navigation }) {
-
     return {
         title: 'Details',
         headerTintColor: white,
@@ -109,7 +69,7 @@ export function ForecastDetailsOptions({ route, navigation }) {
         /** We show one menuIcon(share-social) on screen and have other menu items hidden only to appear when "more" icon is clicked */
         headerRight: () => ( 
             <View style={{flexDirection: "row", justifyContent: "space-between", width: 80}}>
-              <TouchableOpacity >
+              <TouchableOpacity onPress={handleOnClickShareTextButton}>
                 <Ionicons name="share-social" size={24} color={white} />
               </TouchableOpacity>
               <ForecastDetailsMenu
