@@ -1,9 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FetchWeatherTask } from "./utils/NetworkUtils"
-import { getPreferredWeatherLocation } from "./utils/SunshinePreferences"
-import {getSimpleWeatherStringsFromJson } from "./utils/OpenWeatherJsonUtils"
 import AppLoading from "expo-app-loading"
 import { error_message, forecast_stack, forecast_details_stack, settings_stack } from "./res/values/strings"
 import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
@@ -20,24 +17,18 @@ import middleware from "./middleware"
 export default function App() {
 
   const [ state, setState ] = useState({
-    weatherData: [],
     isReady: false,
   })
 
   useEffect(() => {
     (async () => {
       try{
-        const location = await getPreferredWeatherLocation()
-        const jsonWeatherResponse = await FetchWeatherTask(location)
-        const simpleJsonWeatherData = getSimpleWeatherStringsFromJson(jsonWeatherResponse)
         setState({
           isReady: true,
-          weatherData: simpleJsonWeatherData,
         })
 
       }catch(e){
         setState({
-          ...state,
           isReady: true,
         })
         console.warn("Error From NetworkFetch: ", e)
@@ -45,7 +36,7 @@ export default function App() {
     })()
   }, [])
 
-  const { weatherData, isReady } = state
+  const { isReady } = state
 
   if (!isReady) {
     return <AppLoading />
@@ -58,7 +49,7 @@ export default function App() {
         {isReady 
         ? (
           <NavigationContainer>
-            <MainNavigator weatherData={weatherData}/>
+            <MainNavigator />
           </NavigationContainer>     
         )
         : (
@@ -80,13 +71,12 @@ const styles = StyleSheet.create({
 
 
 const Stack = createStackNavigator()
-  const MainNavigator = ({ weatherData }) => (
+  const MainNavigator = () => (
     <Stack.Navigator headerMode="screen">
         <Stack.Screen
           name={forecast_stack}
           component={Forecast}
           options={ForecastOptions}
-          initialParams={{ weatherData }}
         />
         <Stack.Screen
           name={forecast_details_stack}

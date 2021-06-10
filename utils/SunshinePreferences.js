@@ -32,9 +32,15 @@ export const getPreferredWeatherLocation = async () => {
 *
 * @return true If metric display should be used
 */
-export  const isMetric = () => {
-    /** This will be implemented in a future lesson **/
-    return true
+export const isMetric = async () => {
+    const results =  await AsyncStorage.getItem(SUNSHINE_PREFERENCES_ASYNCSTORAGE_KEY)
+    let userPrefersMetric = false
+
+    if(JSON.parse(results)[pref_units_key]  === pref_units_metric){
+        userPrefersMetric = true
+    } 
+
+    return userPrefersMetric
 }
 
 const getDefaultWeatherLocation = () => {
@@ -61,7 +67,7 @@ export async function getSunshinePreferences(){
         {
             title: pref_units_label,
             prefKey: pref_units_key,
-            unit: isMetric() ? pref_units_metric : pref_units_imperial, //
+            unit: await isMetric() ? pref_units_metric : pref_units_imperial, //
             entries: [pref_units_metric, pref_units_imperial],
             entryValues: [pref_units_metric, pref_units_imperial],
         },

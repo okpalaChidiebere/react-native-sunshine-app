@@ -5,6 +5,7 @@ import { Feather } from "@expo/vector-icons"
 import { CommonActions } from "@react-navigation/native"
 import { white } from "../values/colors"
 import { action_map, action_settings, settings_stack } from "../values/strings"
+import { getPreferredWeatherLocation } from "../../utils/SunshinePreferences"
 
 const ForecastMenu = ({ menustyle, isIcon, textStyle, menutext, navigation }) => {
     
@@ -12,7 +13,7 @@ const ForecastMenu = ({ menustyle, isIcon, textStyle, menutext, navigation }) =>
     let _menu = null;
 
     const openLocationInMap = async () => {
-        const addressString = "1600 Ampitheatre Parkway, CA"
+        const addressString = await getPreferredWeatherLocation() //we now get the location from our preference value stored in AsyncStorage. A default value is returned if there is nothing stored just yet
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
         const geoLocartionUrl = scheme + addressString
 

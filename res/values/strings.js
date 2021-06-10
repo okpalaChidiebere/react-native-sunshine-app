@@ -17,8 +17,8 @@ export const action_settings = "Settings"
 
 export const today = "Today"
 export const tomorrow = "Tomorrow"
-export const format_temperature_celsius = (temp) => `${temp}\u00B0C`
-export const format_temperature_fahrenheit = (temp) => `${temp}\u00B0F`
+export const format_temperature_celsius = (temp) => `${temp.toFixed(0)}\u00B0C`
+export const format_temperature_fahrenheit = (temp) => `${temp.toFixed(0)}\u00B0F`
 
 /**
  * Used by SunshinePreferences

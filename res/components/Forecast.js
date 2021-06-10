@@ -1,14 +1,39 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { FlatList, View, } from "react-native"
 import ForecastListItem from "./ForecastListItem"
 import ForecastMenu from "../menu/forecast"
 import { app_name, white } from "../values/colors"
+import { connect } from "react-redux"
+import { FetchWeatherTask } from "../../utils/NetworkUtils"
+import { getPreferredWeatherLocation } from "../../utils/SunshinePreferences"
+import { getSimpleWeatherStringsFromJson } from "../../utils/OpenWeatherJsonUtils"
 
 
-export default function Forecast({ route, navigation }) {
+function Forecast({ route, navigation, sunshinePreferences }) {
 
     const renderItem = ({ item }) => <ForecastListItem navigation={navigation} weatherForDay={item} />
-    const { weatherData } = route.params //we get the data passed into the initialParams by the Stack
+
+    const [ state, setState ] = useState({
+    weatherData: [],
+  })
+
+    useEffect(() => {
+        (async () => {
+        try{
+            const location = await getPreferredWeatherLocation()
+            const jsonWeatherResponse = await FetchWeatherTask(location)
+            const simpleJsonWeatherData = await getSimpleWeatherStringsFromJson(jsonWeatherResponse)
+            setState({
+            weatherData: simpleJsonWeatherData,
+            })
+
+        }catch(e){
+            console.warn("Error From NetworkFetch: ", e)
+        }
+        })()
+    }, [sunshinePreferences]) // passing this sunshinePreferences as a dependency to useEffect will make sure this Forecast componenet re-renders whevenever the sunshinepreferences store slice is updated
+
+  const { weatherData } = state
 
     return (
         <View>
@@ -21,6 +46,13 @@ export default function Forecast({ route, navigation }) {
         </View>
     );
 }
+
+const mapStateToProps = ({ sunshinePreferences }) => ({
+    sunshinePreferences
+})
+
+const connectedForecast = connect(mapStateToProps)
+export default connectedForecast(Forecast)
 
 export function ForecastOptions({ route, navigation }) {
 

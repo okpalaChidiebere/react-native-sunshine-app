@@ -24,9 +24,11 @@ const celsiusToFahrenheit = (temperatureInCelsius) => {
  * @return Formatted temperature String in the following form:
  * "21°C"
  */
-const formatTemperature = (temperature) => {
+const formatTemperature = async (temperature) => {
 
-    if (!isMetric()) {
+    const metric = await isMetric()
+    //console.log(metric)
+    if (!metric) {
         const ftemperature = celsiusToFahrenheit(temperature)
         return format_temperature_fahrenheit(ftemperature)
     }
@@ -46,12 +48,12 @@ const formatTemperature = (temperature) => {
  *
  * @return String in the form: "HIGH°C / LOW°C"
  */
-export const formatHighLows = (high, low) => {
+export const formatHighLows = async (high, low) => {
     const roundedHigh = Math.round(high)
     const roundedLow = Math.round(low)
 
-    const formattedHigh = formatTemperature(roundedHigh)
-    const formattedLow = formatTemperature(roundedLow)
+    const formattedHigh = await formatTemperature(roundedHigh)
+    const formattedLow = await formatTemperature(roundedLow)
 
     const highLowStr = `${formattedHigh} / ${formattedLow}`
     return highLowStr
