@@ -7,6 +7,7 @@ import { connect } from "react-redux"
 import { FetchWeatherTask } from "../../utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "../../utils/SunshinePreferences"
 import { getSimpleWeatherStringsFromJson } from "../../utils/OpenWeatherJsonUtils"
+import { bulkInsertWeatherData, loadAllWeatherData, deleteWeatherData } from "../../utils/AppDatabase"
 
 
 function Forecast({ route, navigation, sunshinePreferences }) {
@@ -17,12 +18,20 @@ function Forecast({ route, navigation, sunshinePreferences }) {
     weatherData: [],
   })
 
+    const displayDB = (rows) => {
+        console.log(JSON.stringify(rows))
+    }
+
     useEffect(() => {
         (async () => {
         try{
             const location = await getPreferredWeatherLocation()
             const jsonWeatherResponse = await FetchWeatherTask(location)
+            //bulkInsertWeatherData(jsonWeatherResponse)
             const simpleJsonWeatherData = await getSimpleWeatherStringsFromJson(jsonWeatherResponse)
+            //loadAllWeatherData(displayDB)
+            //deleteWeatherData(null)
+            loadAllWeatherData(displayDB)
             setState({
             weatherData: simpleJsonWeatherData,
             })

@@ -12,6 +12,7 @@ import { createStore } from "redux"
 import { Provider } from "react-redux"
 import reducers from "./reducers"
 import middleware from "./middleware"
+import { createTable } from "./utils/AppDatabase"
 
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try{
+        createTable()
         setState({
           isReady: true,
         })
