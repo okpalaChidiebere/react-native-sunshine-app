@@ -7,11 +7,12 @@ import EditTextPreference from "./EditTextPreference"
 import ListPreference from "./ListPreference"
 import { pref_location_key, pref_units_key } from "../values/strings"
 import { connect } from "react-redux"
-import { receivePreferences } from "../../actions/preferences"
+//import { receivePreferences } from "../../actions/preferences"
+//import { startImmediateSync } from "../../utils/SunshineSyncUtils"
 
 function Settings({ route, navigation, sunshinePreferences, dispatch }) {
 
-    useEffect(() => {
+    //useEffect(() => {
         /**
          * Before our component mounts, we will run the code below which will get sunshine preferences
          * then run a dispatch which updates the store causing the componet to re-render again and then we get our preferences
@@ -19,17 +20,21 @@ function Settings({ route, navigation, sunshinePreferences, dispatch }) {
          * NOTE: In future lessons we probaly will add this code to App.js where we initalize the weather data from SQLite and 
          * Perferences from AsyncStorage into our redux store
          */
-        (async () => {
-            try{
-               const results = await getSunshinePreferences()
-                dispatch(receivePreferences([
-                    ...results
-                ]))
-            }catch(e){
-                console.warn("Error with preference storage", e)
-            }
-        })()
-    }, [])
+        //(async () => {
+        //    try{
+        //       const results = await getSunshinePreferences()
+               /**
+                * When the user changes their location, new weather data needs to be 
+                * downloaded immediately
+                */
+        //        dispatch(receivePreferences([
+        //            ...results
+        //        ]))
+        //    }catch(e){
+        //        console.warn("Error with preference storage", e)
+        //    }
+        //})()
+    //}, [])
 
 
     return (

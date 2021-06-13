@@ -13,20 +13,33 @@ import { Provider } from "react-redux"
 import reducers from "./reducers"
 import middleware from "./middleware"
 import { createTable } from "./utils/AppDatabase"
+import { initialize } from "./utils/SunshineSyncUtils"
 
 
 export default function App() {
 
   const [ state, setState ] = useState({
     isReady: false,
+    initialized: false, //This will be mainly used as a safeguard to prevent calling the synchronize method more than once.
   })
 
   useEffect(() => {
     (async () => {
       try{
         createTable()
+
+        /** 
+         * We check if an immediate sync is required. It’s best practice to not initialize things more than once, 
+         * so for that, we will make sure that startImmediateSync will only get called once when the app starts 
+         * and only if the database was empty.
+         */
+        if(!state.initialized){
+          await initialize()
+        }
+
         setState({
           isReady: true,
+          initialized: true,
         })
 
       }catch(e){

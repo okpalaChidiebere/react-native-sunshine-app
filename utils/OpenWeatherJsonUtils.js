@@ -1,8 +1,8 @@
-import { formatHighLows } from './SunshineWeatherUtils'
+import { formatHighLows, getStringForWeatherCondition } from './SunshineWeatherUtils'
 import { DAY_IN_MILLIS, getFriendlyDateString } from './SunshineDateUtils'
 
-export const getSimpleWeatherStringsFromJson = (forecastJsonStr) => {
-    const promises = forecastJsonStr.list.map(async ({temp, weather} , i) => {
+export const getWeatherStringsFromJson = (rowsFromDB) => {
+    const promises = rowsFromDB.map(async ({ max, min, weather_id } , i) => {
         /* String array to hold each day's weather String */
         let parsedWeatherData
 
@@ -23,10 +23,10 @@ export const getSimpleWeatherStringsFromJson = (forecastJsonStr) => {
         date = getFriendlyDateString(dateTimeMillis, false)
 
         /* Max temperature for the day */
-        high = temp.max
-        low = temp.min
+        high = max
+        low = min
 
-        description = weather[0].main
+        description = getStringForWeatherCondition(weather_id)
         highAndLow = await formatHighLows(high, low)
 
         parsedWeatherData = date + " - " + description + " - " + highAndLow
@@ -36,4 +36,3 @@ export const getSimpleWeatherStringsFromJson = (forecastJsonStr) => {
     return Promise.all(promises); //make sure we get all the weather for the day. If i had not done this, i will get error like "PayloadTooLargeError: request entity too large" 
 }
 
-    

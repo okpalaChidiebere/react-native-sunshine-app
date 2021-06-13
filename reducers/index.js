@@ -7,9 +7,11 @@ The initial state of our store with data when empty looks like
 
 import { combineReducers } from "redux"
 import sunshinePreferences from "./preferences"
+import weatherData from "./weather"
 
 //We combine all reducers into a main root reducer because the createStore function only accepts a single reducer
 export default combineReducers({
     sunshinePreferences,
+    weatherData,
 }) 
 

@@ -53,19 +53,22 @@ export const createTable = () => {
     })
 }
 
-export const loadAllWeatherData = (displayData) => {
+export const loadAllWeatherData = () => {
     const SQL_LOAD_ALL_WEATHER_DATA = 
     `SELECT ${COLUMN_DATE}, ${COLUMN_WEATHER_ID}, ${COLUMN_MIN_TEMP}, ${COLUMN_MAX_TEMP}, ${COLUMN_HUMIDITY}, ${COLUMN_PRESSURE}, ${COLUMN_WIND_SPEED}, ${COLUMN_DEGREES} FROM ${TABLE_NAME};`
-
-    db.transaction(
-        (tx) => {
-          tx.executeSql(SQL_LOAD_ALL_WEATHER_DATA, [], (_, { rows: { _array } }) => displayData(_array)
-          );
-        },
-        (e) => {
-            console.log("ERROR: " + e.message)
-        }
-    );
+    
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            async (tx) => {
+              tx.executeSql(SQL_LOAD_ALL_WEATHER_DATA, [], (_, { rows: { _array } }) => resolve(_array)
+              );
+            },
+            (e) => {
+                reject("ERROR: " + e.message)
+                console.log("ERROR: " + e.message)
+            }
+        );
+    })
 }
 
 /**
