@@ -9,7 +9,7 @@ import { handleInitialData } from "../../actions/shared"
 
 function Forecast({ route, navigation, weatherData, dispatch }) {
 
-    const renderItem = ({ item }) => <ForecastListItem navigation={navigation} weatherForDay={item} />
+    const renderItem = ({ _, index }) => <ForecastListItem navigation={navigation} index={index} />
 
     useEffect(() => {
         (async () => {

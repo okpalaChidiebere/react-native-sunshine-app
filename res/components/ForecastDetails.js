@@ -3,17 +3,23 @@ import { StyleSheet, Text, View, Share, TouchableOpacity }  from "react-native"
 import { primary_text, white } from "../values/colors"
 import ForecastDetailsMenu from "../menu/forecastDetails"
 import { Ionicons } from "@expo/vector-icons"
+import { connect } from "react-redux"
 
-export default function ForecastDetails({ route, navigation}){
+function ForecastDetails({ route, navigation, weatherData }){
 
-    const { weatherForDay } = route.params
+    const { weatherIndex } = route.params
 
     return (
         <View style={styles.container}>
-            <Text style={styles.display_weather}>{weatherForDay}</Text>
+            <Text style={styles.display_weather}>{weatherData[weatherIndex]}</Text>
         </View>
     );
 }
+
+const mapStateToProps = ({ weatherData }) => ({ weatherData })
+
+const connectedForecast = connect(mapStateToProps)
+export default connectedForecast(ForecastDetails)
 
 const styles = StyleSheet.create ({
     container: {

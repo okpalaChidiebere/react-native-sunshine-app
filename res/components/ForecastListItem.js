@@ -3,25 +3,29 @@ import { StyleSheet, Text, TouchableHighlight } from "react-native"
 import {primary_text, activated } from "../values/colors"
 import { CommonActions } from "@react-navigation/native"
 import { forecast_details_stack } from "../values/strings"
+import { connect } from "react-redux"
 
-const handleOnPress = (weatherForDay, navigation) => {
+const handleOnPress = (weatherIndex, navigation) => {
     navigation.dispatch(
         CommonActions.navigate({
           name: forecast_details_stack,
           params: {
-            weatherForDay,
+            weatherIndex,
           },
         })
     )
 }
 
-const ForecastListItem = ({ weatherForDay, style, navigation }) => ( //FYI:  weatherForDay is a string
-    <TouchableHighlight onPress={() => handleOnPress(weatherForDay, navigation)} style={[styles.item, style]} underlayColor={activated}>
-        <Text style={styles.data}>{weatherForDay}</Text>
+const ForecastListItem = ({ style, navigation, weatherData, index }) => ( //FYI:  weatherForDay is a string
+    <TouchableHighlight onPress={() => handleOnPress(index, navigation)} style={[styles.item, style]} underlayColor={activated}>
+        <Text style={styles.data}>{weatherData[index]}</Text>
     </TouchableHighlight>
 )
 
-export default ForecastListItem
+const mapStateToProps = ({ weatherData }) => ({ weatherData })
+
+const connectedForecast = connect(mapStateToProps)
+export default connectedForecast(ForecastListItem)
 
 const styles = StyleSheet.create ({
     row: {
