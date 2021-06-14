@@ -7,9 +7,8 @@ export const startImmediateSync = async() => {
     return await syncWeatherTask()
 }
 
-const syncWeatherTask = async () => {
-    console.log("Sync")
-    try {
+export const syncWeatherTask = async () => {
+    //console.log("Sync")
         const location = await getPreferredWeatherLocation()
         const jsonWeatherResponse = await FetchWeatherTask(location)
 
@@ -28,9 +27,6 @@ const syncWeatherTask = async () => {
         }
 
         /* If the code reaches this point, we have successfully performed our sync */
-    }catch(e){
-        console.log("ERROR: " + e.message)
-    }
 }
 
 export const initialize = async () => {

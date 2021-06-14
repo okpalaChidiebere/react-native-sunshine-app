@@ -14,6 +14,7 @@ import reducers from "./reducers"
 import middleware from "./middleware"
 import { createTable } from "./utils/AppDatabase"
 import { initialize } from "./utils/SunshineSyncUtils"
+import scheduleTaskManagerSync from "./utils/SunshineTaskManager"
 
 
 export default function App() {
@@ -35,6 +36,12 @@ export default function App() {
          */
         if(!state.initialized){
           await initialize()
+
+          /*
+          * This method call triggers Sunshine to create its task to synchronize weather data
+          * periodically.
+          */
+          scheduleTaskManagerSync()
         }
 
         setState({
