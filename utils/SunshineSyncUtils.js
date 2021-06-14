@@ -1,6 +1,7 @@
 import { FetchWeatherTask } from "../utils/NetworkUtils"
 import { getPreferredWeatherLocation } from "../utils/SunshinePreferences"
 import { bulkInsertWeatherData, deleteWeatherData, loadAllWeatherData } from "../utils/AppDatabase"
+import { notifyUserOfNewWeather } from "../utils/NotificationUtils"
 
 
 export const startImmediateSync = async() => {
@@ -25,6 +26,9 @@ export const syncWeatherTask = async () => {
             /* Insert our new weather data into Sunshine's SQLite */
             bulkInsertWeatherData(jsonWeatherResponse)
         }
+
+        //Notify the user with the ID WEATHER_NOTIFICATION_ID
+        notifyUserOfNewWeather()
 
         /* If the code reaches this point, we have successfully performed our sync */
 }

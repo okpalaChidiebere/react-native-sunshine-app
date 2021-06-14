@@ -24,7 +24,7 @@ const celsiusToFahrenheit = (temperatureInCelsius) => {
  * @return Formatted temperature String in the following form:
  * "21°C"
  */
-const formatTemperature = async (temperature) => {
+export const formatTemperature = async (temperature) => {
 
     const metric = await isMetric()
     //console.log(metric)
@@ -226,4 +226,43 @@ export const getStringForWeatherCondition = (weatherId) => {
             return `${wC.condition_unknown}${weatherId}`;
     }
     return stringId;
+}
+
+export const getEmojiForWeatherCondition = (weatherId) => {
+
+    /*
+     * Based on weather code data for Open Weather Map.
+     * https://www.piliapp.com/emoji/list/weather/
+     */
+    if (weatherId >= 200 && weatherId <= 232) {
+        return `⛈`
+    } else if (weatherId >= 300 && weatherId <= 321) {
+        return `🌦`
+    } else if (weatherId >= 500 && weatherId <= 504) {
+        return `🌧`
+    } else if (weatherId == 511) {
+        return `🌨`
+    } else if (weatherId >= 520 && weatherId <= 531) {
+        return `🌧`
+    } else if (weatherId >= 600 && weatherId <= 622) {
+        return `🌨`
+    } else if (weatherId >= 701 && weatherId <= 761) {
+        return `🌫`
+    } else if (weatherId == 761 || weatherId == 771 || weatherId == 781) {
+        return `⛈`
+    } else if (weatherId == 800) {
+        return `🌤`
+    } else if (weatherId == 801) {
+        return `⛅`
+    } else if (weatherId >= 802 && weatherId <= 804) {
+        return `☁`
+    } else if (weatherId >= 900 && weatherId <= 906) {
+        return `⛈`
+    } else if (weatherId >= 958 && weatherId <= 962) {
+        return `⛈`
+    } else if (weatherId >= 951 && weatherId <= 957) {
+        return `🌤`
+    }
+
+    return `⛈`
 }

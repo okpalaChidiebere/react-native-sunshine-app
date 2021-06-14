@@ -1,6 +1,9 @@
 import * as SQLite from "expo-sqlite" // https://docs.expo.io/versions/v41.0.0/sdk/sqlite/
 import { DAY_IN_MILLIS } from "./SunshineDateUtils"
 
+export const CONTENT_AUTHORITY = "sunshineApp"
+export const BASE_CONTENT_URL = CONTENT_AUTHORITY + "://"
+
 const DATABASE_NAME = "weather.db"
 const TABLE_NAME = "weather"
 const COLUMN_ID = "_ID"
@@ -61,6 +64,34 @@ export const loadAllWeatherData = () => {
         db.transaction(
             async (tx) => {
               tx.executeSql(SQL_LOAD_ALL_WEATHER_DATA, [], (_, { rows: { _array } }) => resolve(_array)
+              );
+            },
+            (e) => {
+                reject("ERROR: " + e.message)
+                console.log("ERROR: " + e.message)
+            }
+        );
+    })
+}
+
+export const getFirstRowWeatherData = () => {
+    const getFristRow = "SELECT " + 
+    COLUMN_DATE + ", " +
+    COLUMN_WEATHER_ID + ", " +
+    COLUMN_MIN_TEMP + ", " +
+    COLUMN_MAX_TEMP + ", " +
+    COLUMN_HUMIDITY + ", " +
+    COLUMN_PRESSURE + ", " +
+    COLUMN_WIND_SPEED + ", " +
+    COLUMN_DEGREES    + " " +
+    "FROM " + TABLE_NAME + " " +
+    "ORDER BY " + COLUMN_ID + " " +
+     "ASC LIMIT 1;" ;
+    
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            async (tx) => {
+              tx.executeSql(getFristRow, [], (_, { rows: { _array } }) => resolve(_array)
               );
             },
             (e) => {

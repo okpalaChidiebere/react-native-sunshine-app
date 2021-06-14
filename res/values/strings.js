@@ -45,6 +45,13 @@ export const forecast_stack = 'Forecast' //Route to Forecast Component
 export const forecast_details_stack = 'ForecastDetails' //Route to ForecastDetails Component Page
 export const settings_stack = "Settings" //ROute to the Settings Perferences page
 
+// Strings related to Notification Enabled preference 
+export const pref_enable_notifications_label = "Weather Notifications"
+export const pref_enable_notifications_true = "Enabled"
+export const pref_enable_notifications_false = "Not Enabled"
+export const pref_enable_notifications_key = "enable_notifications"
+export const pref_last_notification = "last_notification"
+
 /** Weather Conditions (From OpenWeatherMap)*/
 export const wC = {
     condition_2xx: "Storm",

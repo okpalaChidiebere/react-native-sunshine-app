@@ -1,3 +1,5 @@
+export const colorPrimary = "#03A9F4"
+export const colorPrimaryDark = "#0288D1"
 export const colorAccent = "#FFD740"
 
 export const primary_text = "#212121"

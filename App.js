@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Linking } from 'react-native';
 import AppLoading from "expo-app-loading"
 import { error_message, forecast_stack, forecast_details_stack, settings_stack } from "./res/values/strings"
 import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
@@ -12,9 +12,10 @@ import { createStore } from "redux"
 import { Provider } from "react-redux"
 import reducers from "./reducers"
 import middleware from "./middleware"
-import { createTable } from "./utils/AppDatabase"
+import { BASE_CONTENT_URL, CONTENT_AUTHORITY, createTable } from "./utils/AppDatabase"
 import { initialize } from "./utils/SunshineSyncUtils"
 import scheduleTaskManagerSync from "./utils/SunshineTaskManager"
+import * as Notifications from "expo-notifications"
 
 
 export default function App() {
@@ -70,7 +71,46 @@ export default function App() {
         <StatusBar style="light" backgroundColor="#303F9F"/>
         {isReady 
         ? (
-          <NavigationContainer>
+          <NavigationContainer
+            linking={/* https://reactnavigation.org/docs/navigation-container/#linking */{
+              prefixes: [BASE_CONTENT_URL, `https://${CONTENT_AUTHORITY}.com`],
+              config: {
+                /* Configuration for linking */
+                screens: {
+                  [forecast_details_stack]: {
+                    path: 'weatherData/:weatherIndex',
+                    parse: {
+                      weatherIndex: Number
+                    }
+                  },
+                },
+                },
+              subscribe(listener) {
+                const onReceiveURL = ({ url }) => listener(url)
+
+                // Listen to incoming links from deep linking
+                Linking.addEventListener('url', onReceiveURL)
+
+                // Listen for whenever a user interacts with a notification (eg. taps on it). This is similar to perndingIntent in Android app development
+                //https://docs.expo.io/versions/v41.0.0/sdk/notifications/#addnotificationresponsereceivedlistenerlistener-event-notificationresponse--void-void
+                const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+                const url = response.notification.request.content.data.url
+
+                  // Any custom logic to see whether the URL needs to be handled
+                  //...
+
+                  // Let React Navigation handle the URL
+                  listener(url)
+                });
+
+                return () => {
+                  // Clean up the event listeners
+                  Linking.removeEventListener('url', onReceiveURL)
+                  subscription.remove();
+                }
+              },
+            }}
+          >
             <MainNavigator />
           </NavigationContainer>     
         )
