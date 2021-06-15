@@ -28,7 +28,6 @@ function Forecast({ route, navigation, weatherData, dispatch }) {
             data={weatherData} 
             renderItem={renderItem} 
             keyExtractor={( _ , index )=> index.toString()}
-            ItemSeparatorComponent={() => <View style={{height:1, backgroundColor:"#dadada", marginLeft:8, marginRight:8}}/> }
             />
         </View>
     );

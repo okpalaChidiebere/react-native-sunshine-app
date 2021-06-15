@@ -17,8 +17,8 @@ export const action_settings = "Settings"
 
 export const today = "Today"
 export const tomorrow = "Tomorrow"
-export const format_temperature_celsius = (temp) => `${temp.toFixed(0)}\u00B0C`
-export const format_temperature_fahrenheit = (temp) => `${temp.toFixed(0)}\u00B0F`
+export const format_temperature_celsius = (temp) => `${temp.toFixed(0)}\u00B0`
+export const format_temperature_fahrenheit = (temp) => `${temp.toFixed(0)}\u00B0`
 
 /**
  * Used by SunshinePreferences
@@ -118,3 +118,18 @@ Cmd+Shift+L or Cmd+Ctrl+G on Mac  for “vscode select all occurances command”
 Saved me a lot of time copying things over
 https://www.youtube.com/watch?v=dFwjJr1Fg5M
 */
+
+
+/**
+ * - Used for Accessibility purposes (Accessibility == a11y)                            
+ *                                                                                   
+ * Fun Fact: Accessibility is abbreviated a11y because accessibility starts with 'a', 
+ * followed by 11 letters, and then a 'y'. It is pronounced alley, like an alley cat. 
+ * 
+ * Read more on why you need Accessibility for your app
+ * http://man.hubwiz.com/docset/React_Native.docset/Contents/Resources/Documents/react-native/docs/accessibility.html
+ * https://www.shopify.ca/partners/blog/react-native-accessibility
+ */
+export const a11y_forecast = (description) => `Forecast: ${description}` 
+export const a11y_high_temp = (highString) => `High: ${highString}`
+export const a11y_low_temp = (lowString) => `Low: ${lowString}`
