@@ -143,9 +143,7 @@ const Stack = createStackNavigator()
         <Stack.Screen
           name={forecast_details_stack}
           component={ForecastDetails}
-          options={/*If you do not specify this option, react-native will still add it for you but with default options*/
-            ForecastDetailsOptions
-          }
+          options={ForecastDetailsOptions}
         />
         <Stack.Screen
           name={settings_stack}

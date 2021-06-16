@@ -94,12 +94,21 @@ const styles = StyleSheet.create ({
 
 export function ForecastDetailsOptions({ route, navigation }) {
 
+    const { forecastSummary } = route.params
+
     const handleOnClickShareTextButton = async () => {
+
+    /*
+     * In this Component, you can share the selected day's forecast. No social sharing is complete
+     * without using a hashtag. #BeTogetherNotTheSame
+     */
+    const FORECAST_SHARE_HASHTAG = " #SunshineApp"
+    
         
-        const title = "Learning How to Share"
+        const title = "Share Weather Details"
         const textThatYouWantToShare =
-            "Sharing the coolest thing I've learned so far. You should " +
-                "check out Udacity and Google's Android Nanodegree!"
+            `${forecastSummary.dateString} - ${forecastSummary.description} - ${forecastSummary.highString}/${forecastSummary.lowString}` +
+                FORECAST_SHARE_HASHTAG
 
         /*
         More content config options here

@@ -7,12 +7,13 @@ import { connect } from "react-redux"
 import { formatTemperature, getStringForWeatherCondition } from "../../utils/SunshineWeatherUtils"
 import { getFriendlyDateString } from "../../utils/SunshineDateUtils"
 
-const handleOnPress = (weatherIndex, navigation) => {
+const handleOnPress = (weatherIndex, navigation, forecastSummary) => {
     navigation.dispatch(
         CommonActions.navigate({
           name: forecast_details_stack,
           params: {
             weatherIndex,
+            forecastSummary,
           },
         })
     )
@@ -53,8 +54,11 @@ const ForecastListItem = ({ style, navigation, weatherData, index }) => {
 
   const { dateString, description, highString, lowString, weatherId } = forcastForThisDay
 
+  /* Store the forecast summary String in our forecast summary field to share later */
+  const mForecastSummary = { dateString, description, highString, lowString }
+
   return (
-      <TouchableHighlight onPress={() => handleOnPress(index, navigation)} style={[styles.item, style]} underlayColor={activated}>
+      <TouchableHighlight onPress={() => handleOnPress(index, navigation, mForecastSummary)} style={[styles.item, style]} underlayColor={activated}>
           <View style={styles.row}>
             <View style={{flexDirection: "row"}}>
               <Image
