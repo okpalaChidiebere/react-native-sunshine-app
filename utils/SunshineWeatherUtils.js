@@ -1,5 +1,6 @@
 import { isMetric } from "./SunshinePreferences"
-import { format_temperature_celsius, format_temperature_fahrenheit, wC } from "../res/values/strings"
+import { format_temperature_celsius, format_temperature_fahrenheit, wC, 
+    format_wind_kmh, format_wind_mph } from "../res/values/strings"
 
 /**
 * This method will convert a temperature from Celsius to Fahrenheit.
@@ -265,4 +266,37 @@ export const getEmojiForWeatherCondition = (weatherId) => {
     }
 
     return `⛈`
+}
+
+export const getFormattedWind = async (windSpeed, degrees) => {
+
+    const metric = await isMetric()
+
+    if (!metric) {
+        windSpeed = .621371192237334 * windSpeed
+    }
+
+    /*
+     * You know what's fun, writing really long if/else statements with tons of possible
+     * conditions. Seriously, try it!
+     */
+    let direction = "Unknown"
+    if (degrees >= 337.5 || degrees < 22.5) {
+        direction = "N"
+    } else if (degrees >= 22.5 && degrees < 67.5) {
+        direction = "NE"
+    } else if (degrees >= 67.5 && degrees < 112.5) {
+        direction = "E"
+    } else if (degrees >= 112.5 && degrees < 157.5) {
+        direction = "SE"
+    } else if (degrees >= 157.5 && degrees < 202.5) {
+        direction = "S"
+    } else if (degrees >= 202.5 && degrees < 247.5) {
+        direction = "SW"
+    } else if (degrees >= 247.5 && degrees < 292.5) {
+        direction = "W"
+    } else if (degrees >= 292.5 && degrees < 337.5) {
+        direction = "NW"
+    }
+    return !metric ? format_wind_mph(windSpeed, direction) : format_wind_kmh(windSpeed, direction)
 }

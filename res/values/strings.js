@@ -19,6 +19,13 @@ export const today = "Today"
 export const tomorrow = "Tomorrow"
 export const format_temperature_celsius = (temp) => `${temp.toFixed(0)}\u00B0`
 export const format_temperature_fahrenheit = (temp) => `${temp.toFixed(0)}\u00B0`
+export const pressure_label = "Pressure"
+export const format_pressure = (pressure) => `${pressure.toFixed(0)} hpa`
+export const humidity_label = "Humidity"
+export const format_humidity = (humidity) => `${humidity.toFixed(0)} %`
+export const wind_label = "Wind"
+export const format_wind_kmh = (windSpeed, direction) => `${windSpeed.toFixed(0)} km/h ${direction}`
+export const format_wind_mph = (windSpeed, direction) =>`${windSpeed.toFixed(0)} mph ${direction}`
 
 /**
  * Used by SunshinePreferences
@@ -133,6 +140,9 @@ https://www.youtube.com/watch?v=dFwjJr1Fg5M
 export const a11y_forecast = (description) => `Forecast: ${description}` 
 export const a11y_high_temp = (highString) => `High: ${highString}`
 export const a11y_low_temp = (lowString) => `Low: ${lowString}`
+export const a11y_humidity = (humidity) => `Humidity: ${humidity}`
+export const a11y_pressure = (pressure) => `Barometric Pressure: ${pressure}`
+export const a11y_wind = (wind) => `Wind speed and direction: ${wind}`
 
 
 /*

@@ -1,17 +1,79 @@
-import React from "react"
-import { StyleSheet, Text, View, Share, TouchableOpacity }  from "react-native"
-import { primary_text, white } from "../values/colors"
+import React, { useEffect, useState } from "react"
+import { StyleSheet, View, Share, TouchableOpacity }  from "react-native"
+import { white } from "../values/colors"
 import ForecastDetailsMenu from "../menu/forecastDetails"
 import { Ionicons } from "@expo/vector-icons"
 import { connect } from "react-redux"
+import ExtraWeatherDetails from "./ExtraWeatherDetails"
+import PrimaryWeatherInfo from "./PrimaryWeatherInfo"
+import { getFormattedWind, formatTemperature, getStringForWeatherCondition } from "../../utils/SunshineWeatherUtils"
+import { getFriendlyDateString } from "../../utils/SunshineDateUtils"
+import { format_pressure, format_humidity } from "../values/strings"
+import { getLargeArtResourceIdForWeatherCondition } from "../values/strings"
 
 function ForecastDetails({ route, navigation, weatherData }){
 
     const { weatherIndex } = route.params
 
+    const [ details, setForcastDetails ] = useState({
+        dateString: 0,
+        description: "",
+        highString: "",
+        lowString: "",
+        weatherId: 0,
+        humidityString: "",
+        windSpeed: "",
+        pressureString: "",
+    })
+
+    useEffect(() => {
+        (async () => {
+        try{
+          const { date, max, min, weather_id, pressure, wind, humidity, degrees } = weatherData[weatherIndex]
+  
+          const dateString = getFriendlyDateString(date, false)
+          const description = getStringForWeatherCondition(weather_id)
+          const highString = await formatTemperature(max)
+          const lowString = await formatTemperature(min)
+          const windSpeed = await getFormattedWind(wind, degrees)
+          const pressureString = format_pressure(pressure)
+          const humidityString = format_humidity(humidity)
+
+          setForcastDetails({
+            dateString,
+            description,
+            highString, 
+            lowString,
+            weatherId: weather_id,
+            windSpeed,
+            pressureString,
+            humidityString,
+          })
+        }catch(e){
+            console.warn("Error with ForecastList item", e)
+        }
+        })()
+    }, [ weatherData ])
+
+    const { dateString, description, highString, lowString, weatherId, humidityString, windSpeed, pressureString } = details
+
     return (
         <View style={styles.container}>
-            <Text style={styles.display_weather}>{weatherData[weatherIndex]}</Text>
+            <View style={{
+            flexGrow: 1}}>
+                <PrimaryWeatherInfo 
+                dateString={dateString} 
+                description={description} 
+                highString={highString} 
+                lowString={lowString} 
+                getIcon={() => getLargeArtResourceIdForWeatherCondition(weatherId)}
+                />
+            </View>
+            <View style={{
+            flexGrow: 1,
+            /*backgroundColor: '#7E57C2'*/}}>
+                <ExtraWeatherDetails humidity={humidityString} pressure={pressureString} wind={windSpeed}/>
+            </View>
         </View>
     );
 }
@@ -24,12 +86,9 @@ export default connectedForecast(ForecastDetails)
 const styles = StyleSheet.create ({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'stretch',
         padding: 8,
-    },
-    display_weather: {
-        fontSize: 22,
-        color: primary_text,
     },
 })
 
