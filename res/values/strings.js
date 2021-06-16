@@ -133,3 +133,45 @@ https://www.youtube.com/watch?v=dFwjJr1Fg5M
 export const a11y_forecast = (description) => `Forecast: ${description}` 
 export const a11y_high_temp = (highString) => `High: ${highString}`
 export const a11y_low_temp = (lowString) => `Low: ${lowString}`
+
+
+/*
+I used this link https://respresso.io/image-converter/ to convert the .xml files at
+https://github.com/udacity/ud851-Sunshine/tree/student/S12.04-Solution-ResourceQualifiers/app/src/main/res/drawable
+into .png for react-native
+*/
+export function getLargeArtResourceIdForWeatherCondition (weatherId) {
+    
+    if (weatherId >= 200 && weatherId <= 232) {
+        return require('../assets/art_storm_3x.png')
+    } else if (weatherId >= 300 && weatherId <= 321) {
+        return require('../assets/art_light_rain_3x.png')
+    } else if (weatherId >= 500 && weatherId <= 504) {
+        return require('../assets/art_rain_3x.png')
+    } else if (weatherId == 511) {
+        return require('../assets/art_snow_3x.png')
+    } else if (weatherId >= 520 && weatherId <= 531) {
+        return require('../assets/art_rain_3x.png')
+    } else if (weatherId >= 600 && weatherId <= 622) {
+        return require('../assets/art_snow_3x.png')
+    } else if (weatherId >= 701 && weatherId <= 761) {
+        return require('../assets/art_fog_3x.png')
+    } else if (weatherId == 761 || weatherId == 771 || weatherId == 781) {
+        return require('../assets/art_storm_3x.png')
+    } else if (weatherId == 800) {
+        return require('../assets/art_clear_3x.png') 
+    } else if (weatherId == 801) {
+        return require('../assets/art_light_clouds_3x.png')
+    } else if (weatherId >= 802 && weatherId <= 804) {
+        return require('../assets/art_clouds_3x.png')
+    } else if (weatherId >= 900 && weatherId <= 906) {
+        return require('../assets/art_storm_3x.png')
+    } else if (weatherId >= 958 && weatherId <= 962) {
+        return require('../assets/art_storm_3x.png')
+    } else if (weatherId >= 951 && weatherId <= 957) {
+        return require('../assets/art_clear_3x.png')
+    }
+  
+    //console.log("Unknown Weather: " + weatherId)
+    return require('../assets/art_storm_3x.png')
+  }

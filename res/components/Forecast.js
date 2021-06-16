@@ -5,11 +5,21 @@ import ForecastMenu from "../menu/forecast"
 import { app_name, white } from "../values/colors"
 import { connect } from "react-redux"
 import { handleInitialData } from "../../actions/shared"
+import ForecastTodayListItem from "./ForecastTodayListItem"
 
 
 function Forecast({ route, navigation, weatherData, dispatch }) {
 
-    const renderItem = ({ _, index }) => <ForecastListItem navigation={navigation} index={index} />
+    const renderItem = ({ _, index }) => {
+        // if we had ItemViewType more than two, switch statement. But this will do
+        //NOTE: whatever login you write in here should not be asynchronous. 
+        //This function should be free from external side effects just like return block for any react component
+        return(
+            index === 0
+            ? <ForecastTodayListItem navigation={navigation} index={index}/>
+            : <ForecastListItem navigation={navigation} index={index} />
+        )
+    }
 
     useEffect(() => {
         (async () => {
