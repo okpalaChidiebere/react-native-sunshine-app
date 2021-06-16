@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { StyleSheet, View, Share, TouchableOpacity }  from "react-native"
+import { View, Share, TouchableOpacity, useWindowDimensions }  from "react-native"
+import styled from "styled-components/native"
 import { white } from "../values/colors"
 import ForecastDetailsMenu from "../menu/forecastDetails"
 import { Ionicons } from "@expo/vector-icons"
@@ -11,7 +12,21 @@ import { getFriendlyDateString } from "../../utils/SunshineDateUtils"
 import { format_pressure, format_humidity } from "../values/strings"
 import { getLargeArtResourceIdForWeatherCondition } from "../values/strings"
 
+/**
+ * 
+ * For smallest width of the screen is 600, we show PrimaryWeatherInfo and ExtraWeatherDetails side by side (colums)
+ * For screen of width 600 and higher we show PrimaryWeatherInfo on top of ExtraWeatherDetails (rows)
+ */
+const DetailsViewContainer = styled.View`
+flex: 1;
+flex-direction: ${props => props.windowWidth < 600 ? 'column' : 'row'};
+padding: 8px;
+align-items: stretch;
+`
+
 function ForecastDetails({ route, navigation, weatherData }){
+
+    const window = useWindowDimensions();
 
     const { weatherIndex } = route.params
 
@@ -58,7 +73,7 @@ function ForecastDetails({ route, navigation, weatherData }){
     const { dateString, description, highString, lowString, weatherId, humidityString, windSpeed, pressureString } = details
 
     return (
-        <View style={styles.container}>
+        <DetailsViewContainer windowWidth={window.width}>
             <View style={{
             flexGrow: 1}}>
                 <PrimaryWeatherInfo 
@@ -74,7 +89,7 @@ function ForecastDetails({ route, navigation, weatherData }){
             /*backgroundColor: '#7E57C2'*/}}>
                 <ExtraWeatherDetails humidity={humidityString} pressure={pressureString} wind={windSpeed}/>
             </View>
-        </View>
+        </DetailsViewContainer>
     );
 }
 
@@ -82,15 +97,6 @@ const mapStateToProps = ({ weatherData }) => ({ weatherData })
 
 const connectedForecast = connect(mapStateToProps)
 export default connectedForecast(ForecastDetails)
-
-const styles = StyleSheet.create ({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        padding: 8,
-    },
-})
 
 export function ForecastDetailsOptions({ route, navigation }) {
 
