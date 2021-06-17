@@ -7,6 +7,7 @@ import ListPreference from "./ListPreference"
 import { pref_location_key, pref_units_key, pref_enable_notifications_key } from "../values/strings"
 import { connect } from "react-redux"
 import CheckBoxPreference from "../components/CheckBoxPreference"
+import { colorPrimary } from "../values/colors"
 
 function Settings({ route, navigation, sunshinePreferences, dispatch }) {
 
@@ -54,6 +55,6 @@ export function SettingsOptions({ _ }) {
     return {
         title: app_name,
         headerTintColor: 'white',
-        headerStyle: { backgroundColor: "#3F51B5" },
+        headerStyle: { backgroundColor: colorPrimary },
     }
 }

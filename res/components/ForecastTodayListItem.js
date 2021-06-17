@@ -4,6 +4,8 @@ import { getLargeArtResourceIdForWeatherCondition } from "../values/strings"
 import { connect } from "react-redux"
 import { formatTemperature, getStringForWeatherCondition } from "../../utils/SunshineWeatherUtils"
 import { getFriendlyDateString } from "../../utils/SunshineDateUtils"
+import { colorPrimary, white } from "../values/colors"
+import { handleOnPress } from "./ForecastListItem"
 
 
 const ForecastTodayListItem = ({ navigation, weatherData, index }) => {
@@ -41,12 +43,14 @@ const ForecastTodayListItem = ({ navigation, weatherData, index }) => {
 
     const { dateString, description, highString, lowString, weatherId } = forcastForToday
 
+      /* Store the forecast summary String in our forecast summary field to share later */
+      const mForecastSummary = { dateString, description, highString, lowString }
 
     return (
-        <TouchableHighlight >
+        <TouchableHighlight onPress={() => handleOnPress(index, navigation, mForecastSummary)}>
             <View style={styles.row}>
                 <View style={{ alignItems:"center", justifyContent:"center"}}>
-                    <Text style={{fontSize: 20}}>{dateString}</Text>
+                    <Text style={{fontSize: 20, color: white}}>{dateString}</Text>
                 </View>
                 <View style={{flex: 1,
                 flexDirection: 'row',
@@ -60,7 +64,7 @@ const ForecastTodayListItem = ({ navigation, weatherData, index }) => {
                             style={{width: 96, height: 96}}
                             source={getLargeArtResourceIdForWeatherCondition(weatherId)}
                         />
-                        <Text style={{marginTop: 8, fontSize: 20}}>{description}</Text>
+                        <Text style={{marginTop: 8, fontSize: 20, color: white}}>{description}</Text>
                     </View>
                     <View style={{
                     width: 70, height: 90,
@@ -72,8 +76,8 @@ const ForecastTodayListItem = ({ navigation, weatherData, index }) => {
                     marginTop: 30,
                     //backgroundColor: '#673AB7'
                     }}>
-                        <Text style={{fontSize: 72 }}>{highString}</Text>
-                        <Text style={{fontSize: 36, marginRight: 25}}>{lowString}</Text>
+                        <Text style={{fontSize: 72, color: white }}>{highString}</Text>
+                        <Text style={{fontSize: 36, marginRight: 25, color: white}}>{lowString}</Text>
                     </View>
                 </View>
             </View>
@@ -91,5 +95,6 @@ const styles = StyleSheet.create ({
       flexDirection: 'column',
       paddingBottom: 20,
       paddingTop: 20,
+      backgroundColor: colorPrimary,
     },
 })

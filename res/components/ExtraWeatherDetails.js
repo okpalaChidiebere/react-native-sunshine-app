@@ -2,12 +2,14 @@ import React from "react"
 import { Text, View }  from "react-native"
 import { wind_label, humidity_label, pressure_label, 
     a11y_humidity, a11y_pressure, a11y_wind } from "../values/strings"
+import { white, detail_accent_label, detail_accent_pane_background } from "../values/colors"
 
 const ExtraWeatherDetails = ({ humidity, pressure, wind }) => {
 
     return (
         <View style={{flex: 1,
             flexDirection: 'column',
+            backgroundColor: detail_accent_pane_background,
             alignItems: 'stretch'}}
         >
             <View style={{
@@ -22,12 +24,12 @@ const ExtraWeatherDetails = ({ humidity, pressure, wind }) => {
                     flex: 1,
                     marginLeft: 30}}
                 >
-                    <Text style={{fontSize: 19}}>{humidity_label}</Text>
+                    <Text style={{fontSize: 19, color: detail_accent_label}}>{humidity_label}</Text>
                 </View>
                 <View style={{flex: 1,
                     justifyContent:"flex-start"}}
                 >
-                    <Text style={{fontSize: 23}}>{humidity}</Text>
+                    <Text style={{fontSize: 23, color: white}}>{humidity}</Text>
                 </View>
             </View>
             <View style={{
@@ -42,12 +44,12 @@ const ExtraWeatherDetails = ({ humidity, pressure, wind }) => {
                     flex: 1,
                     marginLeft: 30}}
                 >
-                    <Text style={{fontSize: 19}}>{pressure_label}</Text>
+                    <Text style={{fontSize: 19, color: detail_accent_label}}>{pressure_label}</Text>
                 </View>
                 <View style={{flex: 1,
                     justifyContent:"flex-start"}}
                 >
-                    <Text style={{fontSize: 23}}>{pressure}</Text>
+                    <Text style={{fontSize: 23, color: white}}>{pressure}</Text>
                 </View>
             </View>
             <View style={{
@@ -62,12 +64,12 @@ const ExtraWeatherDetails = ({ humidity, pressure, wind }) => {
                     flex: 1,
                     marginLeft: 30}}
                 >
-                    <Text style={{fontSize: 19}}>{wind_label}</Text>
+                    <Text style={{fontSize: 19, color: detail_accent_label}}>{wind_label}</Text>
                 </View>
                 <View style={{flex: 1,
                     justifyContent:"flex-start"}}
                 >
-                    <Text style={{fontSize: 23}}>{wind}</Text>
+                    <Text style={{fontSize: 23, color: white}}>{wind}</Text>
                 </View>
             </View>
         </View>

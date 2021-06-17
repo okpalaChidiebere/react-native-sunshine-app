@@ -1,6 +1,7 @@
 import React from "react"
 import { Text, View, Image }  from "react-native"
 import { a11y_forecast, a11y_high_temp, a11y_low_temp } from "../values/strings"
+import { secondary_text, primary_text } from "../values/colors"
 
 
 const PrimaryWeatherInfo = ({ getIcon, dateString, highString, lowString, description }) => {
@@ -14,7 +15,7 @@ const PrimaryWeatherInfo = ({ getIcon, dateString, highString, lowString, descri
                 justifyContent:"flex-end",
                 alignItems:"center",
             }}>
-                    <Text style={{fontSize: 20}}>{dateString}</Text>
+                    <Text style={{fontSize: 20, color: secondary_text}}>{dateString}</Text>
             </View>
             <View style={{ flex: 1,
               flexDirection:"row",
@@ -25,7 +26,7 @@ const PrimaryWeatherInfo = ({ getIcon, dateString, highString, lowString, descri
                     source={getIcon()}
                 />
                 <Text 
-                style={{marginTop: 8, fontSize: 72, alignSelf:"flex-end" }}
+                style={{marginTop: 8, fontSize: 72, alignSelf:"flex-end", color: primary_text }}
                 accessible={true} 
                 accessibilityLabel={a11y_high_temp(highString)}
                 >{highString}</Text>
@@ -35,14 +36,14 @@ const PrimaryWeatherInfo = ({ getIcon, dateString, highString, lowString, descri
               justifyContent: 'space-around'}}
             >
                 <Text 
-                style={{ fontSize: 20, marginTop: 15 }}
+                style={{ fontSize: 20, marginTop: 15, color: secondary_text }}
                 accessible={true} 
                 accessibilityLabel={a11y_forecast(description)}
                 >
                     {description}
                 </Text>
                 <Text 
-                style={{ fontSize: 36, marginRight: 25 }}
+                style={{ fontSize: 36, marginRight: 25, color: secondary_text }}
                 accessible={true} 
                 accessibilityLabel={a11y_low_temp(lowString)}
                 >

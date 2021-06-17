@@ -7,7 +7,7 @@ import { connect } from "react-redux"
 import { formatTemperature, getStringForWeatherCondition } from "../../utils/SunshineWeatherUtils"
 import { getFriendlyDateString } from "../../utils/SunshineDateUtils"
 
-const handleOnPress = (weatherIndex, navigation, forecastSummary) => {
+export const handleOnPress = (weatherIndex, navigation, forecastSummary) => {
     navigation.dispatch(
         CommonActions.navigate({
           name: forecast_details_stack,

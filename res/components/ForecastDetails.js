@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { View, Share, TouchableOpacity, useWindowDimensions }  from "react-native"
 import styled from "styled-components/native"
-import { white } from "../values/colors"
+import { white, colorPrimary } from "../values/colors"
 import ForecastDetailsMenu from "../menu/forecastDetails"
 import { Ionicons } from "@expo/vector-icons"
 import { connect } from "react-redux"
@@ -20,8 +20,20 @@ import { getLargeArtResourceIdForWeatherCondition } from "../values/strings"
 const DetailsViewContainer = styled.View`
 flex: 1;
 flex-direction: ${props => props.windowWidth < 600 ? 'column' : 'row'};
-padding: 8px;
 align-items: stretch;
+`
+
+/*
+There is no such thing as Resource Qualifires for React-Native, But with the help of 
+styled-component, we can pass screen dimensions as prop to render different value based on 
+Screen size.
+
+Here we are saying when the phone is at landscape mode, we are going to have the layout occupy
+certain percentage of the screen
+*/
+const DetailsOuterLayouts = styled.View`
+flex: 1;
+flex-grow: ${props => props.windowWidth < 600 ? '1' : `${props.sw600}`};
 `
 
 function ForecastDetails({ route, navigation, weatherData }){
@@ -74,8 +86,7 @@ function ForecastDetails({ route, navigation, weatherData }){
 
     return (
         <DetailsViewContainer windowWidth={window.width}>
-            <View style={{
-            flexGrow: 1}}>
+            <DetailsOuterLayouts windowWidth={window.width} sw600={.55}>
                 <PrimaryWeatherInfo 
                 dateString={dateString} 
                 description={description} 
@@ -83,12 +94,10 @@ function ForecastDetails({ route, navigation, weatherData }){
                 lowString={lowString} 
                 getIcon={() => getLargeArtResourceIdForWeatherCondition(weatherId)}
                 />
-            </View>
-            <View style={{
-            flexGrow: 1,
-            /*backgroundColor: '#7E57C2'*/}}>
+            </DetailsOuterLayouts>
+            <DetailsOuterLayouts windowWidth={window.width} sw600={.45}>
                 <ExtraWeatherDetails humidity={humidityString} pressure={pressureString} wind={windSpeed}/>
-            </View>
+            </DetailsOuterLayouts>
         </DetailsViewContainer>
     );
 }
@@ -145,7 +154,7 @@ export function ForecastDetailsOptions({ route, navigation }) {
     return {
         title: 'Details',
         headerTintColor: white,
-        headerStyle: { backgroundColor: "#3F51B5" },
+        headerStyle: { backgroundColor: colorPrimary },
         /** We show one menuIcon(share-social) on screen and have other menu items hidden only to appear when "more" icon is clicked */
         headerRight: () => ( 
             <View style={{flexDirection: "row", justifyContent: "space-between", width: 80}}>

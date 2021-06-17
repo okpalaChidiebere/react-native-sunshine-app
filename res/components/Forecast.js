@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { FlatList, View, } from "react-native"
 import ForecastListItem from "./ForecastListItem"
 import ForecastMenu from "../menu/forecast"
-import { app_name, white } from "../values/colors"
+import { app_name, white, colorPrimary } from "../values/colors"
 import { connect } from "react-redux"
 import { handleInitialData } from "../../actions/shared"
 import ForecastTodayListItem from "./ForecastTodayListItem"
@@ -53,7 +53,11 @@ export function ForecastOptions({ route, navigation }) {
     return {
         title: app_name,
         headerTintColor: white,
-        headerStyle: { backgroundColor: "#3F51B5" },
+        headerStyle: { 
+            backgroundColor: colorPrimary,
+            elevation: 0, // remove shadow on Android
+            shadowOpacity: 0, // remove shadow or elevation on iOS
+        },
         /** We have all menuItem Hiddens on this Component  */
         headerRight: () => ( 
           <ForecastMenu 

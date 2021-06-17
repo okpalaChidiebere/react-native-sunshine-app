@@ -16,6 +16,7 @@ import { BASE_CONTENT_URL, CONTENT_AUTHORITY, createTable } from "./utils/AppDat
 import { initialize } from "./utils/SunshineSyncUtils"
 import scheduleTaskManagerSync from "./utils/SunshineTaskManager"
 import * as Notifications from "expo-notifications"
+import { colorPrimaryDark } from "./res/values/colors"
 
 
 export default function App() {
@@ -68,7 +69,7 @@ export default function App() {
   return (
     <Provider store={createStore(reducers, middleware)}>
       <View style={styles.container}>
-        <StatusBar style="light" backgroundColor="#303F9F"/>
+        <StatusBar style="light" backgroundColor={colorPrimaryDark}/>
         {isReady 
         ? (
           <NavigationContainer

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
-import { primary_text, secondary_text, activated, colorAccent } from "../values/colors"
+import { primary_text, secondary_text, activated, colorAccent, white } from "../values/colors"
 import { connect } from "react-redux"
 import { handleSavePerference } from "../../actions/preferences"
 
@@ -44,10 +44,10 @@ function CheckBoxPreference({ title, value, summaryOff, summaryOn, onNotificatio
                     {  // more configuration on this here https://github.com/react-native-checkbox/react-native-checkbox
                         ...Platform.select({
                         ios: {
-                            tintColor: "#fff",
+                            tintColor: white,
                             onTintColor: colorAccent,
                             onFillColor: colorAccent,
-                            onCheckColor: "#fff"
+                            onCheckColor: white
                         },
                         android: {
                             tintColors: {true: colorAccent, false: colorAccent}

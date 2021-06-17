@@ -5,6 +5,7 @@ import { Modal, Portal, TextInput } from "react-native-paper"
 import { colorAccent } from "../values/colors"
 import { connect } from "react-redux"
 import { handleSavePerference } from "../../actions/preferences"
+import { white } from "../values/colors"
 
 function EditTextPreference({ prefKey, title, value, onLocationChange }){
 
@@ -44,7 +45,7 @@ function EditTextPreference({ prefKey, title, value, onLocationChange }){
                         selectionColor={colorAccent}
                         onChangeText={text => setText(text)}
                         theme={{colors: {primary: colorAccent /* why we need this here https://stackoverflow.com/questions/58786281/change-label-color-textinput-react-native-paper-onfocus */}}}
-                        style={{backgroundColor:"white", paddingBottom: 0}}
+                        style={{backgroundColor: white, paddingBottom: 0}}
                         />
                         <View style={{flexDirection:"row", justifyContent:"flex-end", marginTop: 20, marginRight: 10}}>
                             <Pressable onPress={hideModal}><Text style={{color: colorAccent, fontWeight:"700"}}>CANCEL</Text></Pressable>
