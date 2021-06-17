@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
-import { FlatList, View, } from "react-native"
+import { FlatList, View, Image } from "react-native"
 import ForecastListItem from "./ForecastListItem"
 import ForecastMenu from "../menu/forecast"
-import { app_name, white, colorPrimary } from "../values/colors"
+import { white, colorPrimary } from "../values/colors"
 import { connect } from "react-redux"
 import { handleInitialData } from "../../actions/shared"
 import ForecastTodayListItem from "./ForecastTodayListItem"
@@ -51,7 +51,7 @@ export default connectedForecast(Forecast)
 export function ForecastOptions({ route, navigation }) {
 
     return {
-        title: app_name,
+        title: "",
         headerTintColor: white,
         headerStyle: { 
             backgroundColor: colorPrimary,
@@ -68,5 +68,6 @@ export function ForecastOptions({ route, navigation }) {
             route={route}
             isIcon={true}/>
         ),
+        headerLeft: () => ( <Image style={{resizeMode: 'stretch', marginTop: 3, marginLeft: 15, width: 95, height: 30}} source={require("../assets/assets-hdpi/ic_logo.png")}/> ),
     }
 }

@@ -32,7 +32,7 @@ export const getFriendlyDateString = (dateInMillis, showFullDate) => {
 
         const res = readableDate.split(" ");
         if(dayNumber - currentDayNumber < 2){
-            return `${dayName} ${res[1]} ${res[3]}`; //eg Today Jun 5
+            return `${dayName} ${res[1]} ${res[2]}`; //eg Today Jun 5
         }else{
             return res[0]+" "+res[1]
         }
