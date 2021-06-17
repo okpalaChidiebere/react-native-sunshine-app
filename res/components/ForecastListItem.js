@@ -82,14 +82,14 @@ const ForecastListItem = ({ style, navigation, weatherData, index }) => {
             </View>
             <View style={{flexDirection: "row"}}>
               <Text 
-                style={[{ marginRight: 20, fontSize: 25, color: primary_text, fontFamily:"sans-serif-thin"}]} 
+                style={[{ marginRight: 20, fontSize: 25, color: primary_text, ...Platform.select({ android: { fontFamily:"sans-serif-thin" }}) }]} 
                 accessible={true} 
                 accessibilityLabel={a11y_high_temp(highString)}
               >
                 {highString}
               </Text>
               <Text 
-                style={[{ width: 60, fontSize: 25, color: secondary_text, fontFamily:"sans-serif-thin"}]}
+                style={[{ width: 60, fontSize: 25, color: secondary_text, ...Platform.select({ android: { fontFamily:"sans-serif-thin" }}) }]}
                 accessible={true} 
                 accessibilityLabel={a11y_low_temp(lowString)}
               >

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Linking } from 'react-native';
+import { StyleSheet, Text, Linking } from 'react-native';
 import AppLoading from "expo-app-loading"
 import { error_message, forecast_stack, forecast_details_stack, settings_stack } from "./res/values/strings"
 import ForecastDetails, { ForecastDetailsOptions }  from "./res/components/ForecastDetails"
@@ -17,6 +17,7 @@ import { initialize } from "./utils/SunshineSyncUtils"
 import scheduleTaskManagerSync from "./utils/SunshineTaskManager"
 import * as Notifications from "expo-notifications"
 import { colorPrimaryDark } from "./res/values/colors"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 
 export default function App() {
@@ -68,7 +69,7 @@ export default function App() {
   
   return (
     <Provider store={createStore(reducers, middleware)}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor={colorPrimaryDark}/>
         {isReady 
         ? (
@@ -118,7 +119,7 @@ export default function App() {
         : (
           <Text>{error_message}</Text>
         )}
-      </View>
+      </SafeAreaView>
     </Provider>
   );
 }

@@ -19,16 +19,17 @@ Notifications.setNotificationHandler({
       shouldSetBadge: false,
     }),
 })
-Notifications.setNotificationChannelAsync(WEATHER_NOTIFICATION_ID, Platform.select({
-    android: { // Android-specific fields
+
+if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync(WEATHER_NOTIFICATION_ID, { // Android-specific fields
         name: WEATHER_NOTIFICATION_ID,
         priority: Notifications.AndroidImportance.HIGH,
         autoDismiss: true,
         vibrate: false,
         color: colorPrimary,
         sound: false,
-    },
-}))
+    })
+}
 
 export const notifyUserOfNewWeather = async () => {
 
@@ -50,7 +51,7 @@ export const notifyUserOfNewWeather = async () => {
     * Check if a day has passed since the last notification or if the user just installed the app 
     * and timeSinceLastNotification is undefined.
     * 
-    * moment().diff(moment(undefined), 'days') gives you 0 and we want to send notification
+    * moment().diff(moment(''), 'days') gives you 0 and we want to send notification
     * when the user download the app for the first since notification is enabled by default
     *  time so we have to explicitly handle this scenario. 
     * 
@@ -84,6 +85,23 @@ async function notify() {
     /* WEATHER_NOTIFICATION_ID allows you to update or cancel the notification later on */
     const requestInput = createNotification(WEATHER_NOTIFICATION_ID, notificationText, null, forcastDetailIntentForToday)
 
+    /** DONT FORGET TO ASK FOR PERMISSION!  */
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+            return;
+    }
+
+    /** 
+     * At this point the user has given our app permissions to send Local notifications. Yey!
+     * REMEMBER: Push Notifications only work on real devices and not emulators. But we dont have to
+     * worry about if our app is running on a real device for sending local notifications
+     */
+
     //Notifications.setBadgeCountAsync(1) //not nneded for out app, but nice to know
     //Since we passed null to our request input, this notification will be triggered right away
     Notifications.scheduleNotificationAsync(requestInput)
@@ -98,17 +116,31 @@ async function notify() {
 }
 
 function createNotification (channelId, body, trigger, url) {
-    return{
-        channelId: channelId,
-        content: {
-          title: app_name,
-          body,
-          data: { //we use this data to know which screen to open when the user clicks into our notification
-              url
-          }
-        },
-        trigger,
-    }
+    return (
+        Platform.OS === 'android' ?
+        {
+            channelId: channelId, //channelId is for Android only
+            content: {
+              title: app_name,
+              body,
+              data: { //we use this data to know which screen to open when the user clicks into our notification
+                  url
+              }
+            },
+            trigger,
+        }
+        : {
+            content: {
+                title: app_name,
+                body,
+                data: { //we use this data to know which screen to open when the user clicks into our notification
+                    url
+                }
+            },
+            trigger,
+        }
+    )
+    //return
 }
 
 /**

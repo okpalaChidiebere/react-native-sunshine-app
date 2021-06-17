@@ -96,7 +96,7 @@ export const getLastNotificationTime = async () => {
     * time of the last notification was 0, the difference will always be greater than the
     * number of milliseconds in a day and we will show another notification.
     */
-    return JSON.parse(results)[pref_last_notification]
+    return results && JSON.parse(results)[pref_last_notification] != null ? JSON.parse(results)[pref_last_notification] : ''
 }
 
 export function submitPerference({ key, value }) {
