@@ -1,6 +1,8 @@
 import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 import { syncWeatherTask } from "../utils/SunshineSyncUtils"
+import store from "../store/configureStore"
+import { receivePreferences } from "../actions/preferences"
 
 
 const SUNSHINE_SYNC_TAG = "sunshine-sync-app"
@@ -9,10 +11,15 @@ const SYNC_INTERVAL_HOURS = (3 * 60) * 60 //sync Sunshine every 3 hours
 TaskManager.defineTask(SUNSHINE_SYNC_TAG, async () => {
 
     try {
-        await syncWeatherTask()
+        const response = await syncWeatherTask()
+        if(response.length > 0 ){
+
+            store.dispatch(receivePreferences(response)) //update the UI if the app is in the background or active. If your app is destroyed, this will probably not work :)
+            return BackgroundFetch.Result.NewData
+        }
         //we will push notification after the sync as well in a future lesson
         //console.log(SUNSHINE_SYNC_TAG, "background fetch running")
-        return BackgroundFetch.Result.NewData
+        return BackgroundFetch.Result.NoData
     } catch (error) {
         //console.log(SUNSHINE_SYNC_TAG, "background featch running failed :(")
         return BackgroundFetch.Result.Failed

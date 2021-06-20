@@ -8,16 +8,14 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from '@react-navigation/stack'
 import Forecast, { ForecastOptions } from './res/components/Forecast'
 import Settings, { SettingsOptions } from "./res/components/Settings"
-import { createStore } from "redux"
 import { Provider } from "react-redux"
-import reducers from "./reducers"
-import middleware from "./middleware"
 import { BASE_CONTENT_URL, CONTENT_AUTHORITY, createTable } from "./utils/AppDatabase"
 import { initialize } from "./utils/SunshineSyncUtils"
 import scheduleTaskManagerSync from "./utils/SunshineTaskManager"
 import * as Notifications from "expo-notifications"
 import { colorPrimaryDark } from "./res/values/colors"
 import { SafeAreaView } from "react-native-safe-area-context"
+import store from "./store/configureStore"
 
 
 export default function App() {
@@ -68,7 +66,7 @@ export default function App() {
   }
   
   return (
-    <Provider store={createStore(reducers, middleware)}>
+    <Provider store={store}>
       <SafeAreaView style={styles.container}>
         <StatusBar style="light" backgroundColor={colorPrimaryDark}/>
         {isReady 

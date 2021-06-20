@@ -18,7 +18,7 @@ export const syncWeatherTask = async () => {
         * We need to check for those cases here to prevent any error being thrown
         * We also have no reason to insert fresh data if there isn't any to insert.
         */
-        if (!jsonWeatherResponse != null && jsonWeatherResponse.list != 0) {
+        if (!jsonWeatherResponse != null && jsonWeatherResponse.list.length > 0) {
 
             /* Delete old weather data because we don't need to keep multiple days' data */
             deleteWeatherData(null)
@@ -31,6 +31,7 @@ export const syncWeatherTask = async () => {
         notifyUserOfNewWeather()
 
         /* If the code reaches this point, we have successfully performed our sync */
+        return jsonWeatherResponse
 }
 
 export const initialize = async () => {
