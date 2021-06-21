@@ -8,6 +8,8 @@ To create a react-native app with already predefined expo configurations necessa
 
 To run your app in Android simulator run `yarn android` and for iOS run `yarn ios`. Make sure you have configured your environment following this [link](https://reactnative.dev/docs/environment-setup)
 
+NOTE: when setting up your environment to use Android emulator, sometimes the lates version of JAVA may not have been supported by expo or react-native. So you will have to downgrade your JAVA version. run `java -version` to see your Java version. I had to downgradte from 16.1.1 to 11.0.11 using [sdkman](https://sdkman.io/) i could do that easily. Look at tutorial [here](https://www.youtube.com/watch?v=043tTKcmk2c)
+
 Make sure you must have ran `pod install` inside the ios folder to install all pods related to the packages you added. This way you have all the packages ready for iOS to use. For Android just installing the packages from npm or yam is enough, but for iOS you have the extra step of running `pod install`
 
 # Background Tasks
