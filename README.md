@@ -61,6 +61,7 @@ Accessibility refers to the design of products, devices, services, or environmen
 # FlexBoxes in react-native and components
 
 - This [article](https://www.toptal.com/react-native/react-native-for-android-development) talks about flexBox well and also other mobile app development that a good to know like how to use loading indicators, load image urls, etc
+- [https://freecontent.manning.com/in-depth-styling-with-react-native-and-flexbox/](https://freecontent.manning.com/in-depth-styling-with-react-native-and-flexbox/)
 - Be sure to consider using [react-native-paper](https://callstack.github.io/react-native-paper/activity-indicator.html) for some components
 - Search the [react-native-directory](https://reactnative.directory/) for some external packages and components too as well
 
