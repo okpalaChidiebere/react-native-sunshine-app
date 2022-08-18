@@ -10,7 +10,17 @@ To run your app in Android simulator run `yarn android` and for iOS run `yarn io
 
 NOTE: when setting up your environment to use Android emulator, sometimes the lates version of JAVA may not have been supported by expo or react-native. So you will have to downgrade your JAVA version. run `java -version` to see your Java version. I had to downgradte from 16.1.1 to 11.0.11 using [sdkman](https://sdkman.io/) i could do that easily. Look at tutorial [here](https://www.youtube.com/watch?v=043tTKcmk2c)
 
-By default, the Bare minimal workflow from expo is in Javascript. To add [Typescript](https://docs.expo.dev/guides/typescript/) to the app, inside your app folder run `touch tsconfig.json`. Then run `npx expo start`. This command will detect that there is an typescript configuration file and will ask that it install all typescript dependencies necessary to add typescript to your project. Select 'Yes' then i will complete all the configuration. Run `mv App.js App.tsx` to Change your App.js to App.tsx. You MUST leave you index.js in JS.
+By default, the Bare minimal workflow from expo is in Javascript. To add [Typescript](https://docs.expo.dev/guides/typescript/) to the app, inside your app folder run `touch tsconfig.json`. Then run `npx expo start`. This command will detect that there is an typescript configuration file and will ask that it install all typescript dependencies necessary to add typescript to your project. Select 'Yes' then i will complete all the configuration. Run `mv App.js App.tsx` to Change your App.js to App.tsx. You MUST leave you index.js in JS. **Note:** After upgrade, you may have to add resolutions to your package.json to avoid typescript complaining about classes like:
+
+```json
+{
+  "resolutions": {
+    "@types/react": "<your react-dom version>"
+  }
+}
+```
+
+Must run `yarn install` after
 
 Make sure you must have ran `pod install` inside the ios folder to install all pods related to the packages you added. This way you have all the packages ready for iOS to use. For Android just installing the packages from npm or yam is enough, but for iOS you have the extra step of running `pod install`
 
