@@ -35,9 +35,19 @@ To upgrade an minimal bare workflow with expo its quite simple. There are two qu
 
 ## Option 2:
 
-- Run `expo prebuild --clean` This will delete the native folders and regenerate them before applying changes. [See](https://docs.expo.dev/workflow/expo-cli/)
+- Run `expo prebuild --clean` This will delete the native folders and regenerate them before applying changes. [See](https://docs.expo.dev/workflow/expo-cli/). Before I run pre-build i like to have app package name defined in the app.json files for ios and android respectively then i build. Note that all the expo configurations you have in your app.json file will be applied to your native folder which is good!. For example, if you have linking configurations for your app like [this](https://docs.expo.dev/guides/linking/#in-a-standalone-app), [this](https://docs.expo.dev/guides/linking/#universal-links-on-ios), and [this](https://docs.expo.dev/guides/linking/#deep-links-on-android) which you must add, it will be configured into your info.plist and AndroidManifest.xml respectively which is NICE!
 - Then run `expo-cli upgrade` after.
   It is important to run the command in this sequence.
+
+# Expo build
+
+To build Apps, i like to use EAS Build. With EAS build, you can easily share your app with Stakeholders. Read [this](https://docs.expo.dev/build-reference/apk/) and [this](https://www.youtube.com/watch?v=3RCahcMlsBY). An exmple of an apk build for android can look like `eas build -p android --profile preview` When the build is done, you get a link where you can download the apk file fro your expo account
+
+# Expo App Config
+
+- By default Expo uses the app.json file to configure your app during EAS builds and Expo dev client. Personally i like to use the app.config.js file to write all my configurations because i can feed env variables from my terminal into my configurations; this way i can avoid not committing certain data into github. app.config.js overrides the app.json file. See more [here](https://docs.expo.dev/workflow/configuration/).
+- If you are using expo managed work flow, all your configurations are managed in this config file. However, with a expo minimal bare workflow (standalone) its different. In Standalone app, times you will have to edit the info.plist and AndroidManifest.xml files because when you want to test your code in the simulator, your config in the app.json is not used because its you are not running in expo-dev-client. Personally All the configurations i write in the native code i will also put in the expo config file because it will help during `expo prebuild` and also you can easily see all the configs for your app in one file!
+- The good thing about using expo is that you avoid writing native code. Example With Linking. Because of the fact i am using Linking from the `expo-linking` instead of from `react-native` i dont have to write native code as specified [here](https://reactnavigation.org/docs/deep-linking#setup-on-ios). Might edit the info.plist and AndroidManifest.xml as specified here if i want to run my app outside expo client as specified [here](https://docs.expo.dev/guides/linking/#in-a-standalone-app) but editing those files is easy!. You can see an example of editing native code [here](https://www.youtube.com/watch?v=W6KUjYnGbkk) and [here](https://blog.pusher.com/react-native-auth0/) which sucks
 
 # Background Tasks
 
