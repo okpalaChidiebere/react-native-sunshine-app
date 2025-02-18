@@ -1,16 +1,18 @@
 # Sunshine!
 
-This is the repository for the weather app that i leanerd from [Developing Android Apps](https://www.udacity.com/course/new-android-fundamentals--ud851) course at Udacity. I basically remade that same app but this time with [react-native](https://reactnative.dev/docs/components-and-apis) and then using [Expo APIs](https://docs.expo.dev/versions/latest/) where needed.
+This is the repository for the weather app that i learned from [Developing Android Apps](https://www.udacity.com/course/new-android-fundamentals--ud851) course at Udacity. I basically remade that same app but this time with [react-native](https://reactnative.dev/docs/components-and-apis) and then using [Expo APIs](https://docs.expo.dev/versions/latest/) where needed.
 
-Expo is a service that makes just about everything involving React Native a whole lot easier. With Expo, use Expo managed workflow or bare minimum app(with the `/ios` and `/android` folder exposed to you). I prefer to use the bare minimum expo app because it give me the ability to write [native-modules](https://reactnative.dev/docs/native-modules-intro) for ios and android when needed. And much like Create React App, using Expo with Create React Native App lets us get an application up and running with almost no configuration. You NEED to install Expo client app for [Android](https://play.google.com/store/apps/details?id=host.exp.exponent) or [iOS](https://apps.apple.com/us/app/expo-client/id982107779). With Bare workflow, when running the app outside expo client, you will may to set some manual configurations in native code in info.plist for ios or AndroidManifest.xml for android to get your app work properly. Keep an eye on this.
+Expo is a service that makes just about everything involving React Native a whole lot easier. With Expo, use Expo managed workflow or bare minimum app(with the `/ios` and `/android` folder exposed to you. Usually end up deleting the pre build folders though so that eas can do it themselves. But it is a nice option to have!). I prefer to use the bare minimum expo app because it give me the ability to write [native-modules](https://reactnative.dev/docs/native-modules-intro) for ios and android when needed. Although i prefer to use [expo modules](https://docs.expo.dev/modules/get-started/#creating-the-local-expo-module). And much like Create React App, using Expo with Create React Native App lets us get an application up and running with almost no configuration. You can to install Expo Go app for [Android](https://play.google.com/store/apps/details?id=host.exp.exponent) or [iOS](https://apps.apple.com/us/app/expo-client/id982107779) to run project but its limited to projects using only Expo supported libraries. With Bare workflow, I prefer to use Exp dev client to run my app. This is because i can use libraries that expo do not support with Expo and test them on real devices.
 
-To create a react-native app with already predefined expo configurations necessary for your react native app to be able to use Expo SDKs, run `npx create-expo-app --template` and then choose "minimal bare workflow; expo prebuild" over the other expo templates. Of Course you need to have Node Package Manager already configured in your system
+To create a react-native app with already predefined expo configurations necessary for your react native app to be able to use Expo SDKs, run `npx create-expo-app@latest --template` and then choose "minimal bare workflow; expo prebuild" over the other expo templates. Of Course you need to have Node Package Manager already configured in your system.
 
-To run your app in Android simulator run `npx expo run android` and for iOS run `npx expo run ios`. Make sure you have configured your environment following this [link](https://reactnative.dev/docs/environment-setup)
+To build and run your app with the prebuild on device (Device must be connected to laptop; adb for android; for ios you will see it in the finder) or simulator run `npx expo run android` and for iOS run `npx expo run ios`. This comes in handy if you don't want to wait for Expo EAS build to see potential build error. Make sure you have configured your environment following this [link](https://reactnative.dev/docs/environment-setup). The changes you have in your app.json will be used in generating the prebuild folder for ios and android respectively
 
-To start your app `npx expo start`. The you can switch between development build or Expo Go. I prefer to to use development build
+I prefer to use Expo dev client but you will have to build locally the app with EAS and all `app.json` configs being applied then install the app on the device during development of the app to test features
 
-NOTE: when setting up your environment to use Android emulator, sometimes the latest version of JAVA may not have been supported by expo or react-native. So you will have to downgrade your JAVA version. run `java -version` to see your Java version. I had to downgradre from 16.1.1 to 11.0.11 using [sdkman](https://sdkman.io/) i could do that easily. Look at tutorial [here](https://www.youtube.com/watch?v=043tTKcmk2c)
+To start your app `npx expo start`. Then you can switch between development build or Expo Go. I prefer to to use development build if you have `expo-dev-client` installed in project
+
+NOTE: when setting up your environment to use Android emulator, sometimes the latest version of JAVA may not have been supported by expo or react-native. So you will have to downgrade your JAVA version. run `java -version` to see your Java version. I had to downgrade from 16.1.1 to 11.0.11 using [sdkman](https://sdkman.io/) i could do that easily. Look at tutorial [here](https://www.youtube.com/watch?v=043tTKcmk2c)
 
 By default, the Bare minimal workflow from expo is in Javascript. To add [Typescript](https://docs.expo.dev/guides/typescript/#in-an-existing-project) to the app, convert `App.js` to `App.tsx` by running `mv App.js App.tsx`. Then run `npx expo start`. This command will detect that there is an typescript configuration file and will ask that it install all typescript dependencies necessary to add typescript to your project. Select 'Yes' then i will complete all the configuration. **Note:** After upgrade, you may have to add resolutions to your package.json to avoid typescript complaining about classes like:
 
@@ -47,7 +49,7 @@ To upgrade an minimal bare workflow with expo its quite simple. There are two qu
 
 To build Apps, i like to use EAS Build. With EAS build, you can easily share your app with Stakeholders. Read [this](https://docs.expo.dev/eas-update/getting-started/) and [this](https://www.youtube.com/watch?v=3RCahcMlsBY). An example of an apk build for android can look like `eas build -p android --profile preview` When the build is done, you get a link where you can download the apk file fro your expo account
 
-- Make sure you have `eas` cli installed . Confirm this by running `eas -v`. If not install it by running `npm i -g eas-cli`
+- Make sure you have `eas` cli installed . Confirm this by running `npx eas-cli -v`. If it is not installed or the current version is outdated, the that command will install the latest version. Confirm this by running `npm list -g` Look at this [issue](https://github.com/expo/eas-cli/issues/1075#issuecomment-1859557087)
 - Some expo packages are necessary to be installed to use for EAS. Install `npx expo install expo-updates expo-dev-client`. You will have to install `expo-constants` too if you want to add push notifications to your app. `expo-constants` helps you reference config values from `app.json` or `app.config.ts` file
 - Make sure you are [authenticated](https://docs.expo.dev/more/expo-cli/#authentication) into your expo cli. If you are logged into your expo cli, eas can easily pull in credentials from there. To confirm you are logged into expo run `npx expo whoami`. If you are not logged, run `npx expo login -u YOUR_USERNAME -p YOUR_PASSWORD` . To confirm that eas is logged in run `eas whoami`. The eas and expo cli usernames account usually should match
 - Run `eas update:configure`
@@ -61,6 +63,9 @@ After you run eas build, you will get a project-id that was created for you be s
 **NOTE** if you have the `app.config.ts` file present that overrides the app.json, be sure to update the `app.config.ts` as the terminal tells you. At this point, you should have the project for the app created in [expo.dev](expo.dev) You can confirm this in the dashboard assuming you have created an expo account at expo.dev
 
 - [https://docs.expo.dev/build-reference/apk/](https://docs.expo.dev/build-reference/apk/)
+- [https://docs.expo.dev/archive/classic-updates/publishing/#limitations](https://docs.expo.dev/archive/classic-updates/publishing/#limitations)
+- [Submit to stores](https://docs.expo.dev/submit/introduction/)
+- [EAS build docs](https://docs.expo.dev/build/setup/)
 
 You eas.json file should be similar to this
 
@@ -69,6 +74,10 @@ You eas.json file should be similar to this
   ...
   "build": {
     "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+    },
+    "development-simulator": {
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -93,7 +102,7 @@ You eas.json file should be similar to this
 - `eas build -p android --profile preview --local`
 - The `--local` flag is to build the app locally. And have the `file` (for development or preview) or `file.aab` (for production ready to upload to Google PlayStore)
 - You will be using `adb` to install your .apk build into device or simulator. If you have androidStudio installed chances are you have adb access in your cli
-- `adb devices` list all devices connected currently. If you have simulators running it will show up. If you have a real device connected using usb-c cord, it will show up here. For your connected real device to show up in the list though you have to enable `USB debugging` in the `Developer Options` for your android phone. Watch this [video](https://www.youtube.com/watch?v=J34F_6isIFM) to see how to enable developer options for your phone
+- `adb devices` list all devices connected currently. If you have simulators running it will show up. If you have a real device connected using usb-c cord, it will show up here. For your connected real device to show up in the list though you have to enable `USB debugging` in the [`Developer Options`](https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/) for your android phone. Watch this [video](https://www.youtube.com/watch?v=J34F_6isIFM) to see how to enable developer options for your phone
 - `adb install path/to/the/file.apk` will streamlined updating the app if it already exits or installing the app if it does not exist.
 
 # Generating your first iOS Local build
@@ -102,8 +111,8 @@ You eas.json file should be similar to this
 - The `punycode` module is required and your node version may not support it. So you many need to upgrade your node version. See [stackoverflow](https://stackoverflow.com/questions/77587325/deprecationwarning-the-punycode-module-is-deprecated). At this time node version 20.5.1 is good enough
 - Run `eas build -p ios --profile development --local`.
 - If its your first time, you will be asked to log into your ios developer [account](https://developer.apple.com/account). Say `Yes` to that and Your Apple ID is your email or phoneNumber (the next time you generate a build eas will remember it);
-- If you are not building for ios simulators, you will need apps signed with an ad hoc provisioning profile which can be installed by any iOS device whose unique identifier (UDID) is registered with the provisioning profile. So you have to add `Expo profile` as a verified source for the app. So you will need an Apple Distribution Certificate for this internal distribution. Expo will create this for you and save it to your account. So each time you want to register a device as one of the device that can used with this provisioned profile, it will reuse this certificate. see this [doc](https://docs.expo.dev/build/internal-distribution/#setting-up-ad-hoc-provisioning)
-- If its your first time, you will be prompted to to `provision device for ad hoc build` then any other time you will need to add an ios device manually by running `eas device:create` to add a device that will show up in the list. I prefer to get a registration URL to be opened on your devices. From the url i can download the profile and install it on my device. You need Developer Mode enabled to interact with your internal distribution builds and local development builds. open Settings > Privacy & Security > Developer Mode. Enable the toggle. You will receive a prompt from iOS to restart. See [doc](https://docs.expo.dev/guides/ios-developer-mode/). From the list, you press Space to select or unselect and Return to submit
+- If you are NOT building for ios simulators, you will need apps signed with an ad hoc provisioning profile which can be installed by any iOS device whose unique identifier (UDID) is registered with the provisioning profile. So you have to add `Expo profile` as a verified source for the app. So you will need an Apple Distribution Certificate for this internal distribution. Expo will create this for you and save it to your account. So each time you want to register a device as one of the device that can used with this provisioned profile, it will reuse this certificate. see this [doc](https://docs.expo.dev/build/internal-distribution/#setting-up-ad-hoc-provisioning)
+- If its your first time, you will be prompted to to `provision device for ad hoc build` then any other time you will need to add an ios device manually by running `eas device:create` to add a device that will show up in the list. I prefer to get a registration URL to be opened on your devices. From the url i can download the profile and install it on my device. You need Developer Mode enabled to interact with your internal distribution builds and local development builds. open Settings > Privacy & Security > Developer Mode. Enable the toggle. You will receive a prompt from iOS to restart. See [doc](https://docs.expo.dev/guides/ios-developer-mode/). From the list, you press [Space](https://github.com/expo/eas-cli/issues/1722#issuecomment-1447766267) to select or unselect and Return to submit
 - To install the app on simulator, unzip the `file.tar.gz` file and drag/drop the `.app` (A file with logo) into the simulator
 - To install the build `.ipa` file into real device, connect the device to your laptop using a cable; find the phone, then drag/drop the .ipa file into the General tap. See [doc](https://the-sudhanshu.medium.com/how-to-install-ipa-on-iphone-ipad-eb4fc424561a)
 
@@ -121,7 +130,7 @@ You an use React navigation or you can use [expo-router](https://expo.github.io/
 - For using `expo-router`, make sure you have [install dependencies](https://docs.expo.dev/router/installation/#install-dependencies), [set up entry point](https://docs.expo.dev/router/installation/#setup-entry-point) and [modify your app scheme](https://docs.expo.dev/router/installation/#modify-project-configuration). After these steps, create the `/app/index.js` or `app/index.tsx` if typescript. The expo router uses that folder to know all the pages for your app!. See [documentation](https://docs.expo.dev/router/create-pages/)
 - [Authentication in Expo Router](https://docs.expo.dev/router/reference/authentication/)
 - [Router Settings for development like setting initial route name](https://docs.expo.dev/router/advanced/router-settings/)
-- `npx uri-scheme open "reactndsquawker://about" --android` for testing deep linking
+- `npx uri-scheme open "myapp://about" --android` for testing deep linking. It uses adb under the hood. So make sure there is a device or emulator in adb by running `adb devices`. You may have to to register your app by `npx uri-scheme add myapp`. If the uri-scheme worked successfully, you will see not console error in red
 - [https://reactnavigation.org/docs/deep-linking#testing-with-npx-uri-scheme](https://reactnavigation.org/docs/deep-linking#testing-with-npx-uri-scheme)
 
 # Background Tasks
@@ -179,6 +188,7 @@ Accessibility refers to the design of products, devices, services, or environmen
 
 # Useful Links on Responsive Design
 
+- [App theme Typescript](https://github.com/react-navigation/react-navigation/issues/9161)
 - [https://stackoverflow.com/questions/53465796/how-to-handle-responsive-layout-in-react-native](https://stackoverflow.com/questions/53465796/how-to-handle-responsive-layout-in-react-native)
 - [https://reactnative.dev/docs/usewindowdimensions](https://reactnative.dev/docs/usewindowdimensions)
 - [https://www.w3schools.com/css/css3_flexbox_responsive.asp](https://www.w3schools.com/css/css3_flexbox_responsive.asp)
@@ -191,19 +201,6 @@ Accessibility refers to the design of products, devices, services, or environmen
 - [https://instamobile.io/react-native-tutorials/react-native-location/](https://instamobile.io/react-native-tutorials/react-native-location/)
 - [Android Admob](https://boostrand.com/configuring-app-json-file/)
 - [https://github.com/OneSignal/onesignal-expo-plugin/issues/59](https://github.com/OneSignal/onesignal-expo-plugin/issues/59)
-
-# Expo modules
-
-- [https://docs.expo.dev/config-plugins/plugins-and-mods/](https://docs.expo.dev/config-plugins/plugins-and-mods/)
-- [https://www.youtube.com/watch?v=UczTzTBYRhA](https://www.youtube.com/watch?v=UczTzTBYRhA)
-- [https://docs.expo.dev/modules/native-module-tutorial/](https://docs.expo.dev/modules/native-module-tutorial/)
-- [https://docs.wavemaker.com/learn/react-native/publish-expo-module-and-use-in-wavemaker-project/](https://docs.wavemaker.com/learn/react-native/publish-expo-module-and-use-in-wavemaker-project/)
-- [https://stackoverflow.com/questions/70258607/react-native-expo-android-dark-mode-issue](https://stackoverflow.com/questions/70258607/react-native-expo-android-dark-mode-issue)
-- [https://evba.uk/blog/expo-transparent-android-status-bar](https://evba.uk/blog/expo-transparent-android-status-bar)
-  = [https://geekyants.com/blog/unlocking-expos-power-a-guide-to-config-plugins-and-mods](https://geekyants.com/blog/unlocking-expos-power-a-guide-to-config-plugins-and-mods)
-- [https://github.com/expo/expo/issues/16084](https://github.com/expo/expo/issues/16084)
-- [https://stackoverflow.com/questions/77703362/expo-change-accent-color-of-react-native-community-datetimepicker](https://stackoverflow.com/questions/77703362/expo-change-accent-color-of-react-native-community-datetimepicker)
-- [https://stackoverflow.com/questions/77591531/how-to-resolve-invariant-violation-new-nativeeventemitter-requires-a-non-nu/77591554](https://stackoverflow.com/questions/77591531/how-to-resolve-invariant-violation-new-nativeeventemitter-requires-a-non-nu/77591554)
 
 # Material 3 Google
 
