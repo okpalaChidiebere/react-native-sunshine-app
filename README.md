@@ -39,7 +39,7 @@ To upgrade an minimal bare workflow with expo its quite simple. There are two qu
 
 ## Option 2:
 
-- Run `npm i -g eas-cli` to upgrade to the latest version of EAS CLI
+- Run `npm i -g eas-cli` to upgrade to the latest version of EAS CLI. be sure to refresh the terminal by running `hash -r`. Also run `eas --version` to confirm the version
 - Run `npx expo prebuild --clean` The following command to regenerate the android and ios directories based on the app config (app.json/app.config.js) configuration. [See](https://docs.expo.dev/workflow/expo-cli/). Before I run pre-build i like to have app package name defined in the app.json files for ios and android respectively then i build. Note that all the expo configurations you have in your app.json file will be applied to your native folder which is good!. For example, if you have linking configurations for your app like [this](https://docs.expo.dev/guides/linking/#in-a-standalone-app), [this](https://docs.expo.dev/guides/linking/#universal-links-on-ios), and [this](https://docs.expo.dev/guides/linking/#deep-links-on-android) which you must add, it will be configured into your info.plist and AndroidManifest.xml respectively which is NICE! If you have any custom native modules you wrote for project be sure to keep a copy of them so you move them over to the new generated ios and android folders
 - Then run `npx expo install --fix` after. to upgrade expo and all dependencies to match the latest patch
 - `npx expo-doctor@latest` to check for any possible known issues. this is optional
@@ -47,7 +47,7 @@ To upgrade an minimal bare workflow with expo its quite simple. There are two qu
 
 # Expo build
 
-To build Apps, i like to use EAS Build. With EAS build, you can easily share your app with Stakeholders. Read [this](https://docs.expo.dev/eas-update/getting-started/) and [this](https://www.youtube.com/watch?v=3RCahcMlsBY). An example of an apk build for android can look like `eas build -p android --profile preview` When the build is done, you get a link where you can download the apk file fro your expo account
+To build Apps, i like to use EAS Build. With EAS build, you can easily share your app with Stakeholders. Read [this](https://docs.expo.dev/eas-update/getting-started/) and [this](https://www.youtube.com/watch?v=3RCahcMlsBY). An example of an apk build for android can look like `eas build -p android --profile preview --clear-cache` When the build is done, you get a link where you can download the apk file fro your expo account
 
 - Make sure you have `eas` cli installed . Confirm this by running `npx eas-cli -v`. If it is not installed or the current version is outdated, the that command will install the latest version. Confirm this by running `npm list -g` Look at this [issue](https://github.com/expo/eas-cli/issues/1075#issuecomment-1859557087)
 - Some expo packages are necessary to be installed to use for EAS. Install `npx expo install expo-updates expo-dev-client`. You will have to install `expo-constants` too if you want to add push notifications to your app. `expo-constants` helps you reference config values from `app.json` or `app.config.ts` file
@@ -99,7 +99,7 @@ You eas.json file should be similar to this
 
 # Generating your First Android Local Build
 
-- `eas build -p android --profile preview --local`
+- `eas build -p android --profile preview --local --clear-cache`
 - The `--local` flag is to build the app locally. And have the `file` (for development or preview) or `file.aab` (for production ready to upload to Google PlayStore)
 - You will be using `adb` to install your .apk build into device or simulator. If you have androidStudio installed chances are you have adb access in your cli
 - `adb devices` list all devices connected currently. If you have simulators running it will show up. If you have a real device connected using usb-c cord, it will show up here. For your connected real device to show up in the list though you have to enable `USB debugging` in the [`Developer Options`](https://www.samsung.com/uk/support/mobile-devices/how-do-i-turn-on-the-developer-options-menu-on-my-samsung-galaxy-device/) for your android phone. Watch this [video](https://www.youtube.com/watch?v=J34F_6isIFM) to see how to enable developer options for your phone
@@ -109,7 +109,7 @@ You eas.json file should be similar to this
 
 - Before you build, you need to have the `pod` (supported eas build version) and [`fastlane`](https://docs.fastlane.tools/getting-started/ios/setup/) installed. Run `fastlane -v` and `pod --version`. You can install or update them with `brew`
 - The `punycode` module is required and your node version may not support it. So you many need to upgrade your node version. See [stackoverflow](https://stackoverflow.com/questions/77587325/deprecationwarning-the-punycode-module-is-deprecated). At this time node version 20.5.1 is good enough
-- Run `eas build -p ios --profile development --local`.
+- Run `eas build -p ios --profile development --local --clear-cache`.
 - If its your first time, you will be asked to log into your ios developer [account](https://developer.apple.com/account). Say `Yes` to that and Your Apple ID is your email or phoneNumber (the next time you generate a build eas will remember it);
 - If you are NOT building for ios simulators, you will need apps signed with an ad hoc provisioning profile which can be installed by any iOS device whose unique identifier (UDID) is registered with the provisioning profile. So you have to add `Expo profile` as a verified source for the app. So you will need an Apple Distribution Certificate for this internal distribution. Expo will create this for you and save it to your account. So each time you want to register a device as one of the device that can used with this provisioned profile, it will reuse this certificate. see this [doc](https://docs.expo.dev/build/internal-distribution/#setting-up-ad-hoc-provisioning)
 - If its your first time, you will be prompted to to `provision device for ad hoc build` then any other time you will need to add an ios device manually by running `eas device:create` to add a device that will show up in the list. I prefer to get a registration URL to be opened on your devices. From the url i can download the profile and install it on my device. You need Developer Mode enabled to interact with your internal distribution builds and local development builds. open Settings > Privacy & Security > Developer Mode. Enable the toggle. You will receive a prompt from iOS to restart. See [doc](https://docs.expo.dev/guides/ios-developer-mode/). From the list, you press [Space](https://github.com/expo/eas-cli/issues/1722#issuecomment-1447766267) to select or unselect and Return to submit
@@ -121,6 +121,12 @@ You eas.json file should be similar to this
 - By default Expo uses the app.json file to configure your app during EAS builds and Expo dev client. Personally i like to use the app.config.js file to write all my configurations because i can feed env variables from my terminal into my configurations; this way i can avoid not committing certain data into github. app.config.js overrides the app.json file. See more [here](https://docs.expo.dev/workflow/configuration/).
 - If you are using expo managed work flow, all your configurations are managed in this config file. However, with a expo minimal bare workflow (standalone) its different. In Standalone app, times you will have to edit the info.plist and AndroidManifest.xml files because when you want to test your code in the simulator, your config in the app.json is not used because its you are not running in expo-dev-client. Personally All the configurations i write in the native code i will also put in the expo config file because it will help during `expo prebuild` and also you can easily see all the configs for your app in one file!
 - The good thing about using expo is that you avoid writing native code. Example With Linking. Because of the fact i am using Linking from the `expo-linking` instead of from `react-native` i dont have to write native code as specified [here](https://reactnavigation.org/docs/deep-linking#setup-on-ios). Might edit the info.plist and AndroidManifest.xml as specified here if i want to run my app outside expo client as specified [here](https://docs.expo.dev/guides/linking/#in-a-standalone-app) but editing those files is easy!. You can see an example of editing native code [here](https://www.youtube.com/watch?v=W6KUjYnGbkk) and [here](https://blog.pusher.com/react-native-auth0/) which sucks
+
+# Environmental variables
+
+- [https://docs.expo.dev/eas/environment-variables/](https://docs.expo.dev/eas/environment-variables/)
+- [https://www.youtube.com/watch?v=uKGx3gRrhx0&t=421s](https://www.youtube.com/watch?v=uKGx3gRrhx0&t=421s). This video also show more about eas updates
+- The overall summary about env variables, is that you will have to switch your `app.json` file to `app.config.js` or `app.config.ts`. Add all the env varaibles to the project in the expo dev console, the run `eas env:pull --environment <env_name_like_in_eas_json_file>`. You get the `.env.local` file that you can use to run your app. Its important that for the env variable to be used in eas command you run locally on your console if you don't push it to be run on eas server by adding the flag --local, you need to use the `dotenv` library to load then into the app.config.js file
 
 # Adding Navigation
 
